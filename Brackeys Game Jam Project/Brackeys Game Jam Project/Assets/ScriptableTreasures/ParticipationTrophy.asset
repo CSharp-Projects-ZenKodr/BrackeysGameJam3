@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d80399742385144497646f38b10f1c0, type: 3}
-  m_Name: MedallionOfAwakening
+  m_Name: ParticipationTrophy
   m_EditorClassIdentifier: 
-  treasureIcon: {fileID: 21300000, guid: 7d444b149708c3242a0e6381c1e80932, type: 3}
-  treasureName: Medallion of Awakening
-  treasureDescription: Looks awake.
-  treasureValue: 5000
+  treasureIcon: {fileID: 0}
+  treasureName: Participation Trophy
+  treasureDescription: Congratulations Honey!
+  treasureValue: 100
