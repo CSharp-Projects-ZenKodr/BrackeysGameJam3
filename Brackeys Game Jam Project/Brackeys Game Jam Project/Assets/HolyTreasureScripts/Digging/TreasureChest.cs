@@ -4,17 +4,13 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
-using Assets.HolyTreasureScripts.UI;
 using Assets.HolyTreasureScripts.Digging;
+using Assets.HolyTreasureScripts.UI;
 
 namespace Assets.HolyTreasureScripts.Digging {
     public class TreasureChest : DigPrize {
 
         #region Variables
-        /// <summary>
-        /// The Treasure this chest holds.
-        /// </summary>
-        public ScriptableTreasure treasure;
         /// <summary>
         /// The gradient the wood will tint to.
         /// </summary>
@@ -91,17 +87,14 @@ namespace Assets.HolyTreasureScripts.Digging {
 
         private void OnTriggerEnter(Collider other) {
             if (dugUp) {
+                //TODO: Just make this automatically collect once dug up
                 if (!treasureGot) {
                     if (other.tag == "Player") {
-                        ThirdPersonUserControl useCon = other.GetComponent<ThirdPersonUserControl>();
-                        useCon.ableToMove = false;
-
                         attachedAnimator.SetTrigger("Open");
-                        TreasureNotification.Instance.PopUpCard(treasure);
 
                         treasureGot = true;
-                        PlayerInventory.Instance.AddTreasure(treasure);
-                        GlobalConfig.SaveTreasureChestStatus(treasure.treasureName, treasureGot);
+                        PlayerInventory.Instance.currentMoney += prizeValue;
+                        GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
                     }
                 } 
             }

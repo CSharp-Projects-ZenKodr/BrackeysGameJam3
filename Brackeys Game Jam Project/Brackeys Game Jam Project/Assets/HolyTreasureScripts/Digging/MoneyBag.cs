@@ -1,27 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using Assets.HolyTreasureScripts.UI;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-//TODO: Add money particle system on collection
+
 namespace Assets.HolyTreasureScripts.Digging {
     public class MoneyBag : DigPrize {
-
         #region Variables
         /// <summary>
-        /// The monetary value of the money bag.
+        /// The maximum int value (exclusive) this bag could be worth.
         /// </summary>
-        private int bagValue; 
+        public int exclusiveMaxValue = 201; 
         #endregion
 
         private void Start() {
             GetDigPrizeData();
-            bagValue = Random.Range(0, 201);
+            prizeValue = Random.Range(0, exclusiveMaxValue);
         }
 
         private void OnTriggerEnter(Collider other) {
             if (dugUp) {
                 if (other.tag == "Player") {
-                    PlayerInventory.Instance.currentMoney += bagValue;
+                    PlayerInventory.Instance.currentMoney += prizeValue;
+                    GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
+                    //TODO: Add money particle system on collection
                     Destroy(gameObject);
                 }
             }

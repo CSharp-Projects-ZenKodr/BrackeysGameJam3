@@ -9,6 +9,11 @@ namespace Assets.HolyTreasureScripts.Digging {
 
         #region Variables
         /// <summary>
+        /// The monetary value of this prize.
+        /// </summary>
+        public int prizeValue;
+
+        /// <summary>
         /// The rigidbody attached to the Dig Prize.
         /// </summary>
         public Rigidbody prizeRigidbody { get; set; }

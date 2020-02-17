@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
-//TODO: Add dirt particle system while digging.
+
 namespace Assets.HolyTreasureScripts.Digging {
     public class DiggablePile : MonoBehaviour {
 
@@ -17,6 +17,10 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// The prize that is dug up when dig is complete.
         /// </summary>
         public Transform digPrizeTransform;
+        /// <summary>
+        /// The particle system that is supposed to represent dirt being dug up.
+        /// </summary>
+        public ParticleSystem diggingPS;
         /// <summary>
         /// The rate at which the player digs.
         /// </summary>
@@ -86,6 +90,9 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void DigBehavior() {
             if (playerCanDig) {
                 if (dugValue < 1) {
+                    if (Input.GetKeyDown(KeyCode.Space)) {
+                        diggingPS.Play();
+                    }
                     if (Input.GetKey(KeyCode.Space)) {
                         useCon.ableToMove = false;
                         useCon.crouch = true;
@@ -97,12 +104,14 @@ namespace Assets.HolyTreasureScripts.Digging {
                     if (Input.GetKeyUp(KeyCode.Space)) {
                         useCon.ableToMove = true;
                         useCon.crouch = false;
+                        diggingPS.Stop();
                     } 
                 } else {
                     prize.MakePrizeActive();
                     prize.dugUp = true;
                     useCon.ableToMove = true;
                     useCon.crouch = false;
+                    Destroy(diggingPS);
                     Destroy(gameObject);
                 }
             }
