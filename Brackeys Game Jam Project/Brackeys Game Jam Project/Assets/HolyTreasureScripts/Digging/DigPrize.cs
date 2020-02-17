@@ -16,6 +16,10 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// The collider attached to the Dig Prize.
         /// </summary>
         public Collider prizeCollider { get; set; }
+        /// <summary>
+        /// Return true if Dig Prize has been dug up, or false if not. 
+        /// </summary>
+        public bool dugUp { get; set; }
         #endregion
 
         /// <summary>
@@ -23,9 +27,6 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// </summary>
         public void GetDigPrizeData() {
             prizeRigidbody = GetComponent<Rigidbody>();
-            if (GetComponents<Collider>().Length > 1) {
-                Debug.LogWarning("There is more than one collider on this Dig Prize.");
-            }
             prizeCollider = GetComponent<Collider>();
         }
 

@@ -1,19 +1,17 @@
 fileFormatVersion: 2
-guid: 30ff6691ae2bd5e4ba0f26d3c15fb66b
+guid: 650627ccfa8a1e74fb6ec7ef313dfa9f
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
-    2100000: Handle
-    2100002: Steel
-    2100004: Wood
+    2100000: No Name
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Shovel
+    4300000: MoneyBag
   externalObjects: {}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

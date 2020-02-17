@@ -7,7 +7,7 @@ using UnityStandardAssets.Characters.ThirdPerson;
 using Assets.HolyTreasureScripts.UI;
 using Assets.HolyTreasureScripts.Digging;
 
-namespace Assets.HolyTreasureScripts {
+namespace Assets.HolyTreasureScripts.Digging {
     public class TreasureChest : DigPrize {
 
         #region Variables
@@ -90,17 +90,19 @@ namespace Assets.HolyTreasureScripts {
         }
 
         private void OnTriggerEnter(Collider other) {
-            if (!treasureGot) {
-                if (other.tag == "Player") {
-                    ThirdPersonUserControl useCon = other.GetComponent<ThirdPersonUserControl>();
-                    useCon.ableToMove = false;
+            if (dugUp) {
+                if (!treasureGot) {
+                    if (other.tag == "Player") {
+                        ThirdPersonUserControl useCon = other.GetComponent<ThirdPersonUserControl>();
+                        useCon.ableToMove = false;
 
-                    attachedAnimator.SetTrigger("Open");
-                    TreasureNotification.Instance.PopUpCard(treasure);
+                        attachedAnimator.SetTrigger("Open");
+                        TreasureNotification.Instance.PopUpCard(treasure);
 
-                    treasureGot = true;
-                    PlayerInventory.Instance.AddTreasure(treasure);
-                    GlobalConfig.SaveTreasureChestStatus(treasure.treasureName, treasureGot);
+                        treasureGot = true;
+                        PlayerInventory.Instance.AddTreasure(treasure);
+                        GlobalConfig.SaveTreasureChestStatus(treasure.treasureName, treasureGot);
+                    }
                 } 
             }
         }
