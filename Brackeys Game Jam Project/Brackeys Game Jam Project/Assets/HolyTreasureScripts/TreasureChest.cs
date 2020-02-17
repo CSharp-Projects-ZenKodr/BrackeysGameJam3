@@ -5,9 +5,10 @@ using System.Text;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 using Assets.HolyTreasureScripts.UI;
+using Assets.HolyTreasureScripts.Digging;
 
 namespace Assets.HolyTreasureScripts {
-    public class TreasureChest : MonoBehaviour {
+    public class TreasureChest : DigPrize {
 
         #region Variables
         /// <summary>
@@ -55,6 +56,7 @@ namespace Assets.HolyTreasureScripts {
         #endregion
 
         private void Start() {
+            GetDigPrizeData();
             attachedAnimator = GetComponent<Animator>();
             attachedRenderer = GetComponent<Renderer>();
             lidRenderer = transform.GetChild(0).GetComponent<Renderer>();

@@ -10,6 +10,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// </summary>
         public bool ableToMove = true;
 
+        /// <summary>
+        /// Retrun true if the controller should cround, or false if not.
+        /// </summary>
+        public bool crouch { get; set; }
+
         private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
         private Vector3 m_CamForward;             // The current forward direction of the camera
@@ -46,7 +51,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
                 // read inputs
                 float h = CrossPlatformInputManager.GetAxis("Horizontal");
                 float v = CrossPlatformInputManager.GetAxis("Vertical");
-                bool crouch = Input.GetKey(KeyCode.C);
+                //bool crouch = Input.GetKey(KeyCode.C);
 
                 // calculate move direction to pass to character
                 if (m_Cam != null) {
@@ -68,7 +73,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
                 m_Jump = false;
             }
             else {
-                m_Character.Move(Vector3.zero, false, false);
+                m_Character.Move(Vector3.zero, crouch, false);
             }
         }
     }
