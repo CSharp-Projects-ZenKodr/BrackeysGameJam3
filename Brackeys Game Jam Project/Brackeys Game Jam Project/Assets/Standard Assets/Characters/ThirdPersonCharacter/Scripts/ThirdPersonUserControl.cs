@@ -2,11 +2,9 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 //TODO: Camera and Controller freaks out when I try to move backwards.
-namespace UnityStandardAssets.Characters.ThirdPerson
-{
-    [RequireComponent(typeof (ThirdPersonCharacter))]
-    public class ThirdPersonUserControl : MonoBehaviour
-    {
+namespace UnityStandardAssets.Characters.ThirdPerson {
+    [RequireComponent(typeof(ThirdPersonCharacter))]
+    public class ThirdPersonUserControl : MonoBehaviour {
         /// <summary>
         /// Return true if controller is able to move, or false if not.
         /// </summary>
@@ -18,16 +16,13 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
 
-        
-        private void Start()
-        {
+
+        private void Start() {
             // get the transform of the main camera
-            if (Camera.main != null)
-            {
+            if (Camera.main != null) {
                 m_Cam = Camera.main.transform;
             }
-            else
-            {
+            else {
                 Debug.LogWarning(
                     "Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.", gameObject);
                 // we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
@@ -38,18 +33,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         }
 
 
-        private void Update()
-        {
-            if (!m_Jump)
-            {
+        private void Update() {
+            if (!m_Jump) {
                 //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
             }
         }
 
 
         // Fixed update is called in sync with physics
-        private void FixedUpdate()
-        {
+        private void FixedUpdate() {
             if (ableToMove) {
                 // read inputs
                 float h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -73,8 +65,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
                 // pass all parameters to the character control script
                 m_Character.Move(m_Move, crouch, m_Jump);
-                m_Jump = false; 
-            } else {
+                m_Jump = false;
+            }
+            else {
                 m_Character.Move(Vector3.zero, false, false);
             }
         }

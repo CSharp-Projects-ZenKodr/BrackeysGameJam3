@@ -97,6 +97,7 @@ namespace Assets.HolyTreasureScripts {
                     TreasureNotification.Instance.PopUpCard(treasure);
 
                     treasureGot = true;
+                    PlayerInventory.Instance.AddTreasure(treasure);
                     GlobalConfig.SaveTreasureChestStatus(treasure.treasureName, treasureGot);
                 } 
             }

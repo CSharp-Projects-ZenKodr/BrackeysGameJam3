@@ -21,7 +21,7 @@ namespace Assets.HolyTreasureScripts {
         /// <summary>
         /// The list of treasures the player has aquired.
         /// </summary>
-        private List<ScriptableTreasure> acquiredTreasures;
+        public List<ScriptableTreasure> acquiredTreasures { get; set; }
         #endregion
 
         private void Awake() {
@@ -30,6 +30,18 @@ namespace Assets.HolyTreasureScripts {
             } else {
                 Debug.LogError("There is more than one Player Inven class in the scene!");
             }
+        }
+
+        /// <summary>
+        /// Add a treasure to the player's inventory.
+        /// </summary>
+        /// <param name="treasure">
+        /// The treasure being acquired.
+        /// </param>
+        public void AddTreasure (ScriptableTreasure treasure) {
+            //TODO: Add Scriptable Treasure to the list.
+            //acquiredTreasures.Add(treasure);
+            currentMoney += treasure.treasureValue;
         }
     }
 }

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d80399742385144497646f38b10f1c0, type: 3}
   m_Name: ParticipationTrophy
   m_EditorClassIdentifier: 
-  treasureIcon: {fileID: 0}
+  treasureIcon: {fileID: 21300000, guid: a7e8372a651a3be42ade2beaabd97e32, type: 3}
   treasureName: Participation Trophy
   treasureDescription: Congratulations Honey!
   treasureValue: 100
