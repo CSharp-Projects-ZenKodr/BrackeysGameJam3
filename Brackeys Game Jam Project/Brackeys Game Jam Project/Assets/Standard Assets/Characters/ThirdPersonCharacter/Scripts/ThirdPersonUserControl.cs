@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 //TODO: Camera and Controller freaks out when I try to move backwards.
 namespace UnityStandardAssets.Characters.ThirdPerson {
@@ -9,7 +10,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// Return true if controller is able to move, or false if not.
         /// </summary>
         public bool ableToMove = true;
+        /// <summary>
+        /// The canvas above the player's head used for interaction.
+        /// </summary>
+        public GameObject interactionCanvas;
 
+        /// <summary>
+        /// The command text childed to the interaction canvas.
+        /// </summary>
+        public Text commandText { get; set; }
         /// <summary>
         /// Retrun true if the controller should cround, or false if not.
         /// </summary>
@@ -35,6 +44,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
 
             // get the third person character ( this should never be null due to require component )
             m_Character = GetComponent<ThirdPersonCharacter>();
+
+            commandText = interactionCanvas.transform.GetChild(0).GetComponent<Text>();
         }
 
 

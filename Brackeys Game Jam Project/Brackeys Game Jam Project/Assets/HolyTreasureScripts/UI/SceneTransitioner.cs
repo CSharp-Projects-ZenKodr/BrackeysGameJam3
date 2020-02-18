@@ -49,7 +49,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// What should happen once the scene is done fading in.
         /// </summary>
         public void FadeInComplete() {
-            //TODO: Add more stuff here like allowing playe to move
+            //TODO: Add more stuff here like allowing player to move.
         }
     }
 }

@@ -111,6 +111,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                     prize.dugUp = true;
                     useCon.ableToMove = true;
                     useCon.crouch = false;
+                    useCon.interactionCanvas.SetActive(false);
                     Destroy(diggingPS);
                     Destroy(gameObject);
                 }
@@ -120,12 +121,15 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void OnTriggerEnter(Collider other) {
             if (other.tag == "Player") {
                 useCon = other.GetComponent<ThirdPersonUserControl>();
+                useCon.interactionCanvas.SetActive(true);
+                useCon.commandText.text = "DIG!";
                 playerCanDig = true;
             }
         }
 
         private void OnTriggerExit(Collider other) {
             if (other.tag == "Player") {
+                useCon.interactionCanvas.SetActive(false);
                 useCon = null;
                 playerCanDig = false;
             }

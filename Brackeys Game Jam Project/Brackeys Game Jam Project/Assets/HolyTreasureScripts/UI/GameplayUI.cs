@@ -21,7 +21,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <summary>
         /// The image that represents how much oxygen the player has left.
         /// </summary>
-        public Image oxygenFIll;
+        public Image oxygenFill;
         /// <summary>
         /// The text component that displays the player's money value.
         /// </summary>
@@ -50,7 +50,7 @@ namespace Assets.HolyTreasureScripts.UI {
 
         private void YourOxygenIsRunningLow() {
             oxygenValue -= oxygenDecayRate * Time.deltaTime;
-            oxygenFIll.fillAmount = oxygenValue;
+            oxygenFill.fillAmount = oxygenValue;
         }
 
         /// <summary>

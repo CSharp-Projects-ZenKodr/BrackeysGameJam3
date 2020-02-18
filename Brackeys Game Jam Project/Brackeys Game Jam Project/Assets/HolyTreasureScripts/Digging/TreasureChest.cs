@@ -58,20 +58,6 @@ namespace Assets.HolyTreasureScripts.Digging {
             lidRenderer = transform.GetChild(0).GetComponent<Renderer>();
             chestRedWoodMaterial = attachedRenderer.materials.Last();
             lidRedWoodMaterial = lidRenderer.materials.Last();
-
-            //TODO: Comment this back in for saving
-            //string varName = "Key_" + treasure.treasureName + "_Status";
-            //int status = PlayerPrefs.GetInt(varName);
-            //if (status == 0) {
-            //    treasureGot = false;
-            //} else if (status == 1) {
-            //    treasureGot = true;
-            //    chestRedWoodMaterial.color = woodGradient.Evaluate(1);
-            //    lidRedWoodMaterial.color = woodGradient.Evaluate(1);
-            //    evaluation = 1;
-            //} else {
-            //    Debug.LogError("Failed to get a proper status for a treasure chest!", gameObject);
-            //}
         }
 
         private void Update() {
@@ -82,21 +68,14 @@ namespace Assets.HolyTreasureScripts.Digging {
                     lidRedWoodMaterial.color = woodGradient.Evaluate(evaluation); 
                 }
             }
-
-        }
-
-        private void OnTriggerEnter(Collider other) {
             if (dugUp) {
-                //TODO: Just make this automatically collect once dug up
                 if (!treasureGot) {
-                    if (other.tag == "Player") {
-                        attachedAnimator.SetTrigger("Open");
-
-                        treasureGot = true;
-                        PlayerInventory.Instance.currentMoney += prizeValue;
-                        GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
-                    }
-                } 
+                    attachedAnimator.SetTrigger("Open");
+                    
+                    PlayerInventory.Instance.currentMoney += prizeValue;
+                    GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
+                    treasureGot = true;
+                }
             }
         }
     }
