@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 650627ccfa8a1e74fb6ec7ef313dfa9f
+guid: 829d1dbeb009cb64e9f6223a77e1f07d
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -8,7 +8,7 @@ ModelImporter:
     2100000: No Name
     2300000: //RootNode
     3300000: //RootNode
-    4300000: MoneyBag
+    4300000: Mine
   externalObjects: {}
   materials:
     importMaterials: 0

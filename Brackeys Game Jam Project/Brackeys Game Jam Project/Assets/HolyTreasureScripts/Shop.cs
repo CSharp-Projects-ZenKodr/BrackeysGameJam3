@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.HolyTreasureScripts.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,10 @@ namespace Assets.HolyTreasureScripts {
         /// </summary>
         private ThirdPersonUserControl useCon;
         /// <summary>
+        /// The Gameplay UI in the scene.
+        /// </summary>
+        private GameplayUI gameUI;
+        /// <summary>
         /// Return true if player is in shop bubble, or false if not.
         /// </summary>
         private bool playerInShopBubble = false;
@@ -26,6 +31,7 @@ namespace Assets.HolyTreasureScripts {
 
         private void Start() {
             useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
+            gameUI = GameplayUI.Instance;
         }
 
         private void Update() {
@@ -37,6 +43,8 @@ namespace Assets.HolyTreasureScripts {
                 }
             }
         }
+
+        //TODO: Add Oxygen
 
         private void OnTriggerEnter(Collider other) {
             if (other.tag == "Player") {
