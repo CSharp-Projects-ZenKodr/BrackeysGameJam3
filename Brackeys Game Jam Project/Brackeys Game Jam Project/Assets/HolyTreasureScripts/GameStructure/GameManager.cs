@@ -33,6 +33,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// The transform that holds all the hit icons.
         /// </summary>
         public Transform hitIconParent;
+        /// <summary>
+        /// The ground floors in the game.
+        /// </summary>
+        public GameObject[] groundFloors;
 
         /// <summary>
         /// The Gameplay UI class in the scene.
@@ -58,6 +62,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// Return true if class should check for a game over, or false if not.
         /// </summary>
         private bool checkForGameOver = true;
+        /// <summary>
+        /// The current floor the player is on.
+        /// </summary>
+        private int currentFloor = 0;
         #endregion
 
         private void Awake() {
@@ -117,6 +125,28 @@ namespace Assets.HolyTreasureScripts.GameStructure {
             }
 
             minesExploded = hits;
+
+            if (reinforced) {
+                if (minesExploded == 5) {
+                    ResetMineStatusForNewFloor();
+                }
+            } else {
+                if (minesExploded == 3) {
+                    ResetMineStatusForNewFloor();
+                }
+            }
+        }
+
+        private void ResetMineStatusForNewFloor() {
+            Debug.Log("Next Floor");
+            groundFloors[currentFloor].SetActive(false);
+            currentFloor++;
+            gameUI.UpdateFloorText(currentFloor + 1);
+            minesExploded = 0;
+            foreach (Image hit in hitIcons) {
+                hit.enabled = false;
+            }
+            UpdateMineStatus(0);
         }
 
         private void Update() {

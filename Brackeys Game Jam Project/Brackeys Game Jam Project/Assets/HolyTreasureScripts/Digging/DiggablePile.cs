@@ -9,7 +9,10 @@ namespace Assets.HolyTreasureScripts.Digging {
     public class DiggablePile : MonoBehaviour {
 
         #region Variables
-        
+        /// <summary>
+        /// The empty transfor that prize will child to.
+        /// </summary>
+        public Transform prizeParent;
         /// <summary>
         /// The hole the digging makes.
         /// </summary>
@@ -43,11 +46,18 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// A vector 3 where all of its values are thirty.
         /// </summary>
         private Vector3 Vector3Thirty = new Vector3(30, 30, 30);
-        //TODO: Spawn in prize under the prize parent, and set data accordingly.
         /// <summary>
         /// The prize class of the Dig Prize.
         /// </summary>
-        private DigPrize prize;
+        private DigPrize prizeClass;
+        /// <summary>
+        /// The Renderer attached to the pile.
+        /// </summary>
+        private Renderer attachedRender;
+        /// <summary>
+        /// The Material that represents the pile.
+        /// </summary>
+        private Material pileMaterial;
         /// <summary>
         /// Return true if the player can dig, or false if not.
         /// </summary>
@@ -63,6 +73,8 @@ namespace Assets.HolyTreasureScripts.Digging {
         }
 
         private void GetInitialData() {
+            attachedRender = GetComponent<Renderer>();
+            pileMaterial = attachedRender.material;
             initialPileScale = transform.localScale;
             fullyDugPileScale = new Vector3(initialPileScale.x, initialPileScale.y, 0);
             hole.localScale = Vector3.zero;
@@ -93,13 +105,32 @@ namespace Assets.HolyTreasureScripts.Digging {
                         diggingPS.Stop();
                     } 
                 } else {
-                    prize.dugUp = true;
+                    prizeClass.dugUp = true;
                     useCon.ableToMove = true;
                     useCon.crouch = false;
                     useCon.interactionCanvas.SetActive(false);
                     Destroy(diggingPS);
                     Destroy(gameObject);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Adds a prize to this hole.
+        /// </summary>
+        /// <param name="prize">
+        /// The Prize being added.
+        /// </param>
+        /// <param name="specialPrize">
+        /// Return true if prize is special, or false if not.
+        /// </param>
+        public void AddPrize (GameObject prize, bool specialPrize) {
+            GameObject a = Instantiate(prize, prizeParent);
+            prizeClass = a.GetComponent<DigPrize>();
+            if (specialPrize) {
+                
+                //pileMaterial.SetColor("Main Color", new Color(.624f, .624f, .624f, 1));
+                Debug.Log("I'm Special!", gameObject);
             }
         }
 

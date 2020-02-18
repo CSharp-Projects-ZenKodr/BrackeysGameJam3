@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.HolyTreasureScripts.Digging;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -12,6 +13,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// </summary>
         public GameObject pileParent;
         /// <summary>
+        /// The Dig Prizes the Diggable Piles can have.
+        /// </summary>
+        public GameObject[] digPrizes;
+        /// <summary>
         /// The ground floors in the scene.
         /// </summary>
         public GameObject[] groundFloors;
@@ -23,45 +28,35 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// The value of the border of the play field.
         /// </summary>
         public float borderValue = 100;
-
-        /// <summary>
-        /// The holes that have been spawned.
-        /// </summary>
-        private List<GameObject> spawnedHoles = new List<GameObject>();
-        /// <summary>
-        /// Return true if new hole is an acceptible distance from the previous holes.
-        /// </summary>
-        private bool distanceIsAcceptable = false;
         #endregion
 
         private void Start() {
-            for (int i = 0; i < maxHolesPerFloor; i++) {
-                //Holes need to be .5 away from each other.
-                Vector3 potentialNewPosition = Vector3.one;
+            for (int h = 0; h < groundFloors.Length; h++) {
+                
+                for (int i = 0; i < maxHolesPerFloor; i++) {
+                    //Debug.Log(i);
 
-                while (!distanceIsAcceptable) {
+                    Vector3 potentialNewPosition = Vector3.one;
+
                     potentialNewPosition = new Vector3(Random.Range(-borderValue, borderValue), 0, Random.Range(-borderValue, borderValue));
-                    
-                    if (spawnedHoles.Count != 0) {
-                        foreach (GameObject hole in spawnedHoles) {
-                            float dist = Vector3.Distance(potentialNewPosition, hole.transform.localPosition);
 
-                            if (dist >= 0.5f) {
-                                distanceIsAcceptable = true;
-                                Debug.Log("Acceptible");
-                            }
-                            else {
-                                continue;
-                            }
-                        }
+                    GameObject newHole = Instantiate(pileParent, groundFloors[h].transform);
+                    DiggablePile dp = newHole.transform.GetChild(0).GetComponent<DiggablePile>();
+
+                    if (i < 7) {
+                        //Mines
+                        dp.AddPrize(digPrizes[0], true);
                     }
+                    if (i >= 7 && i < 14) {
+                        //Treasure Chests
+                        dp.AddPrize(digPrizes[1], true);
+                    }
+                    if (i >= 14) {
+                        //Money Bags
+                        dp.AddPrize(digPrizes[2], false);
+                    }
+                    newHole.transform.localPosition = potentialNewPosition;
                 }
-
-                GameObject newHole = Instantiate(pileParent, groundFloors[0].transform);
-
-                newHole.transform.localPosition = potentialNewPosition;
-                spawnedHoles.Add(newHole);
-                distanceIsAcceptable = false;
             }
         }
     }

@@ -254,6 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1dac8d6c884eb4dafa526a383360b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prizeParent: {fileID: 4645901545816542}
   hole: {fileID: 4116804578548918}
   diggingPS: {fileID: 198261534585438078}
   digRate: 0.15

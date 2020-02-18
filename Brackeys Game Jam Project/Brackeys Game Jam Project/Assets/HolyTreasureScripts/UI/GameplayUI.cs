@@ -27,6 +27,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         public Text moneyValue;
         /// <summary>
+        /// The Text that displays what floor the player is on.
+        /// </summary>
+        public Text floorText;
+        /// <summary>
         /// The rate at which the oxygen will decay.
         /// </summary>
         public float oxygenDecayRate = 0.1f;
@@ -61,6 +65,20 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </param>
         public void UpdateMoneyValue(int val) {
             moneyValue.text = val.ToString();
+        }
+
+        /// <summary>
+        /// Updates the Floor Text component.
+        /// </summary>
+        /// <param name="val">
+        /// The floor value the player is on.
+        /// </param>
+        public void UpdateFloorText(int val) {
+            if (val < 4) {
+                floorText.text = "Floor " + val; 
+            } else {
+                floorText.text = "LAVA!";
+            }
         }
     } 
 }
