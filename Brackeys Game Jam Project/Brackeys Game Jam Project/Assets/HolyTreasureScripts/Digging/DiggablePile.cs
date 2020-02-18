@@ -10,13 +10,13 @@ namespace Assets.HolyTreasureScripts.Digging {
 
         #region Variables
         /// <summary>
+        /// The prize class of the Dig Prize.
+        /// </summary>
+        public DigPrize prize;
+        /// <summary>
         /// The hole the digging makes.
         /// </summary>
         public Transform hole;
-        /// <summary>
-        /// The prize that is dug up when dig is complete.
-        /// </summary>
-        public Transform digPrizeTransform;
         /// <summary>
         /// The particle system that is supposed to represent dirt being dug up.
         /// </summary>
@@ -25,15 +25,7 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// The rate at which the player digs.
         /// </summary>
         public float digRate;
-        /// <summary>
-        /// The value the dig prize will go to when it is being unearthed.
-        /// </summary>
-        public float unearthedPrizeValue;
 
-        /// <summary>
-        /// The prize class of the Dig Prize.
-        /// </summary>
-        private DigPrize prize;
         /// <summary>
         /// The controller attached to the player.
         /// </summary>
@@ -55,10 +47,6 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// </summary>
         private Vector3 Vector3Thirty = new Vector3(30, 30, 30);
         /// <summary>
-        /// The Vector 3 coordinate of the unearthed prize.
-        /// </summary>
-        private Vector3 unearthedPrizeVector;
-        /// <summary>
         /// Return true if the player can dig, or false if not.
         /// </summary>
         private bool playerCanDig = false;
@@ -74,11 +62,8 @@ namespace Assets.HolyTreasureScripts.Digging {
 
         private void GetInitialData() {
             initialPileScale = transform.localScale;
-            initialDigPrizePos = digPrizeTransform.localPosition;
             fullyDugPileScale = new Vector3(initialPileScale.x, initialPileScale.y, 0);
             hole.localScale = Vector3.zero;
-            unearthedPrizeVector = new Vector3(0, unearthedPrizeValue, 0);
-            prize = digPrizeTransform.GetComponent<DigPrize>();
         }
 
         private void Update() {
@@ -99,7 +84,6 @@ namespace Assets.HolyTreasureScripts.Digging {
                         dugValue += digRate * Time.deltaTime;
                         transform.localScale = Vector3.Lerp(initialPileScale, fullyDugPileScale, dugValue);
                         hole.localScale = Vector3.Lerp(Vector3.zero, Vector3Thirty, dugValue);
-                        digPrizeTransform.localPosition = Vector3.Lerp(initialDigPrizePos, unearthedPrizeVector, dugValue);
                     }
                     if (Input.GetKeyUp(KeyCode.Space)) {
                         useCon.ableToMove = true;
@@ -107,7 +91,6 @@ namespace Assets.HolyTreasureScripts.Digging {
                         diggingPS.Stop();
                     } 
                 } else {
-                    prize.MakePrizeActive();
                     prize.dugUp = true;
                     useCon.ableToMove = true;
                     useCon.crouch = false;

@@ -8,10 +8,6 @@ namespace Assets.HolyTreasureScripts.Digging {
     public class MoneyBag : DigPrize {
         #region Variables
         /// <summary>
-        /// The money particle system attached to this money bag.
-        /// </summary>
-        public ParticleSystem psMoney;
-        /// <summary>
         /// The maximum int value (exclusive) this bag could be worth.
         /// </summary>
         public int exclusiveMaxValue = 201;
@@ -19,21 +15,36 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// The minimum int value (inclusive this bag could be worth)
         /// </summary>
         public int inclusiveMinValue = 100;
+
+
+        /// <summary>
+        /// The money particle system attached to this money bag.
+        /// </summary>
+        private ParticleSystem psMoney;
+        /// <summary>
+        /// Return true if player got the treasure, or false if not.
+        /// </summary>
+        private bool treasureGot = false;
         #endregion
 
         private void Start() {
             GetDigPrizeData();
+            psMoney = transform.GetChild(0).GetComponent<ParticleSystem>();
             prizeValue = Random.Range(inclusiveMinValue, exclusiveMaxValue);
         }
 
-        private void OnTriggerEnter(Collider other) {
-            if (dugUp) {
-                if (other.tag == "Player") {
+        private void Update() {
+            UnearthPrize();
+            if (unearthed) {
+                if (!treasureGot) {
                     PlayerInventory.Instance.currentMoney += prizeValue;
                     GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
+                    psMoney.transform.parent = null;
                     psMoney.Play();
                     Destroy(gameObject);
                     Destroy(psMoney, 5f);
+
+                    treasureGot = true;
                 }
             }
         }
