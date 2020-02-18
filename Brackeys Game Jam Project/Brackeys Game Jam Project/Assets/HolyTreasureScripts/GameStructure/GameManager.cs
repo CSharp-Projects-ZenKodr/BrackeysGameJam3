@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityStandardAssets.Characters.ThirdPerson;
 using Assets.HolyTreasureScripts.UI;
 
-namespace Assets.HolyTreasureScripts {
+namespace Assets.HolyTreasureScripts.GameStructure {
     public class GameManager : MonoBehaviour {
 
         #region Variables

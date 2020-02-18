@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-namespace Assets.HolyTreasureScripts {
+namespace Assets.HolyTreasureScripts.UI {
     public class Shop : MonoBehaviour {
 
         #region Variables
