@@ -9,10 +9,7 @@ namespace Assets.HolyTreasureScripts.Digging {
     public class DiggablePile : MonoBehaviour {
 
         #region Variables
-        /// <summary>
-        /// The prize class of the Dig Prize.
-        /// </summary>
-        public DigPrize prize;
+        
         /// <summary>
         /// The hole the digging makes.
         /// </summary>
@@ -46,6 +43,11 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// A vector 3 where all of its values are thirty.
         /// </summary>
         private Vector3 Vector3Thirty = new Vector3(30, 30, 30);
+        //TODO: Spawn in prize under the prize parent, and set data accordingly.
+        /// <summary>
+        /// The prize class of the Dig Prize.
+        /// </summary>
+        private DigPrize prize;
         /// <summary>
         /// Return true if the player can dig, or false if not.
         /// </summary>
@@ -113,7 +115,10 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void OnTriggerExit(Collider other) {
             if (other.tag == "Player") {
                 useCon.interactionCanvas.SetActive(false);
+                useCon.ableToMove = true;
+                useCon.crouch = false;
                 useCon = null;
+                diggingPS.Stop();
                 playerCanDig = false;
             }
         }
