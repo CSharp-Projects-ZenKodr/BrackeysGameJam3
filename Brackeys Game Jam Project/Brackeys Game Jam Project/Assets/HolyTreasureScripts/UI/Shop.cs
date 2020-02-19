@@ -11,6 +11,26 @@ namespace Assets.HolyTreasureScripts.UI {
 
         #region Variables
         /// <summary>
+        /// The price of oxygen.
+        /// </summary>
+        public int price_oxygen;
+        /// <summary>
+        /// The price of the upgraded tool.
+        /// </summary>
+        public int price_tool;
+        /// <summary>
+        /// The price of shining the big light.
+        /// </summary>
+        public int price_light;
+        /// <summary>
+        /// The price of reinforcing the walls.
+        /// </summary>
+        public int price_walls;
+        /// <summary>
+        /// The price of upgrading the speed.
+        /// </summary>
+        public int price_speed;
+        /// <summary>
         /// The Canvas that holds the shop UI data.
         /// </summary>
         public GameObject shopCanvas;
@@ -44,7 +64,40 @@ namespace Assets.HolyTreasureScripts.UI {
             }
         }
 
-        //TODO: Add Oxygen
+        /// <summary>
+        /// Adds half the maximum oxygen value to the current oxygen.
+        /// </summary>
+        public void BuyOxygen() {
+
+        }
+
+        /// <summary>
+        /// Upgrades the player's tool so that they dig faster.
+        /// </summary>
+        public void UpgradeTool () {
+
+        }
+
+        /// <summary>
+        /// Shines a big light so the player can see better.
+        /// </summary>
+        public void ShineLight () {
+
+        }
+        
+        /// <summary>
+        /// Reinforces the walls so that they don't break as easily.
+        /// </summary>
+        public void ReinforceWalls() {
+
+        }
+
+        /// <summary>
+        /// Upgrades the player's movement.
+        /// </summary>
+        public void UpgradeMoveSpeed() {
+
+        }
 
         private void OnTriggerEnter(Collider other) {
             if (other.tag == "Player") {
