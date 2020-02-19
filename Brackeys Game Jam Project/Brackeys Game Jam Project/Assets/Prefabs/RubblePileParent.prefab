@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 114644219069102952}
   m_Layer: 0
   m_Name: Rubble Pile
-  m_TagString: Untagged
+  m_TagString: Diggable Pile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -257,7 +257,6 @@ MonoBehaviour:
   prizeParent: {fileID: 4645901545816542}
   hole: {fileID: 4116804578548918}
   diggingPS: {fileID: 198261534585438078}
-  digRate: 0.15
 --- !u!135 &135529950405256920
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -148,19 +148,21 @@ namespace Assets.HolyTreasureScripts.GameStructure {
 
         private void ResetMineStatusForNewFloor() {
             Debug.Log("Next Floor");
-            //TODO: Have Oxygen deplete quicker for each floor
+            
             bigLight.enabled = false;
             groundFloors[currentFloor].SetActive(false);
             currentFloor++;
+
             gameUI.UpdateFloorText(currentFloor + 1);
+            gameUI.oxygenDecayRate *= 2;
 
             shop.price_light = shop.baseLightPrice * (currentFloor + 1);
             shop.UpdatePriceText(shop.text_light, shop.price_light);
             shop.lightItemGroup.ChangeDisplay("Shine Light", "BUY");
 
-            shop.price_walls = shop.baseWallPrice * (currentFloor + 1);
-            shop.UpdatePriceText(shop.text_walls, shop.price_walls);
-            shop.wallsItemGroup.ChangeDisplay("Reinforce Walls","BUY");
+            shop.price_floor = shop.baseWallPrice * (currentFloor + 1);
+            shop.UpdatePriceText(shop.text_floor, shop.price_floor);
+            shop.floorItemGroup.ChangeDisplay("Reinforce Floor","BUY");
 
 
             minesExploded = 0;

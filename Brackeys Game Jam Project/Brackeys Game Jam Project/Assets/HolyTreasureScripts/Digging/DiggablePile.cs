@@ -68,13 +68,11 @@ namespace Assets.HolyTreasureScripts.Digging {
         private float dugValue = 0;
         #endregion
 
-        private void Start() {
-            GetInitialData();
-        }
-
         private void GetInitialData() {
             attachedRender = GetComponent<Renderer>();
             pileMaterial = attachedRender.material;
+            //Debug.Log(pileMaterial.color);
+            
             initialPileScale = transform.localScale;
             fullyDugPileScale = new Vector3(initialPileScale.x, initialPileScale.y, 0);
             hole.localScale = Vector3.zero;
@@ -106,6 +104,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                     } 
                 } else {
                     prizeClass.dugUp = true;
+                    useCon.onPile = false;
                     useCon.ableToMove = true;
                     useCon.crouch = false;
                     useCon.interactionCanvas.SetActive(false);
@@ -125,10 +124,11 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// Return true if prize is special, or false if not.
         /// </param>
         public void AddPrize (GameObject prize, bool specialPrize) {
+            GetInitialData();
             GameObject a = Instantiate(prize, prizeParent);
             prizeClass = a.GetComponent<DigPrize>();
             if (specialPrize) {
-                
+                pileMaterial.color = new Color(.624f, .624f, .624f, 1f);
                 //pileMaterial.SetColor("Main Color", new Color(.624f, .624f, .624f, 1));
                 Debug.Log("I'm Special!", gameObject);
             }

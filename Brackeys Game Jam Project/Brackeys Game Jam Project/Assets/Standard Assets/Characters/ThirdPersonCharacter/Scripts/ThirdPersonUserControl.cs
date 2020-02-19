@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
-//TODO: Camera and Controller freaks out when I try to move backwards.
+
 namespace UnityStandardAssets.Characters.ThirdPerson {
     [RequireComponent(typeof(ThirdPersonCharacter))]
     public class ThirdPersonUserControl : MonoBehaviour {
@@ -31,6 +31,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// Retrun true if the controller should cround, or false if not.
         /// </summary>
         public bool crouch { get; set; }
+        /// <summary>
+        /// Return true if player is on a pile, or false if not.
+        /// </summary>
+        public bool onPile { get; set; }
         /// <summary>
         /// The player's current digRate.
         /// </summary>
@@ -69,9 +73,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         }
         
         private void Update() {
-            if (!m_Jump) {
-                //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-            }
+            //if (!m_Jump) {
+            //    m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+            //}
         }
         
         // Fixed update is called in sync with physics
@@ -79,7 +83,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
             if (ableToMove) {
                 // read inputs
                 float h = CrossPlatformInputManager.GetAxis("Horizontal");
-                float v = CrossPlatformInputManager.GetAxis("Vertical");
+                float v = Mathf.Abs( CrossPlatformInputManager.GetAxis("Vertical"));
                 //bool crouch = Input.GetKey(KeyCode.C);
 
                 // calculate move direction to pass to character
@@ -114,7 +118,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// </param>
         public void SwitchTools(int toolID) {
             for (int i = 0; i < diggingTools.Length; i++) {
-                Debug.Log("I");
                 if (i == toolID) {
                     diggingTools[i].SetActive(true);
                     digRate = baseDigRate * (i + 2);
@@ -122,6 +125,18 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
                 } else {
                     diggingTools[i].SetActive(false);
                 }
+            }
+        }
+
+        private void OnTriggerEnter(Collider other) {
+            if (other.tag == "Diggable Pile") {
+                onPile = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other) {
+            if (other.tag == "Diggable Pile") {
+                onPile = false;
             }
         }
     }

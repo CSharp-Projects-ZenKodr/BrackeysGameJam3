@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.ThirdPerson;
-//TODO: There is a bug when the shop and a hole overlap
+//TODO: Add Tips
 namespace Assets.HolyTreasureScripts.UI {
     public class Shop : MonoBehaviour {
 
@@ -41,7 +41,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <summary>
         /// The price of reinforcing the walls.
         /// </summary>
-        public int price_walls;
+        public int price_floor;
         /// <summary>
         /// The price of upgrading the speed.
         /// </summary>
@@ -61,11 +61,15 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <summary>
         /// The Text component that displays the reinforce walls price.
         /// </summary>
-        public Text text_walls;
+        public Text text_floor;
         /// <summary>
         /// The Text component that displays the upgrade speed price.
         /// </summary>
         public Text text_speed;
+        /// <summary>
+        /// The text component that displays the description of each object.
+        /// </summary>
+        public Text descriptionBox;
         /// <summary>
         /// The shop item group for the upgrade tool display.
         /// </summary>
@@ -77,7 +81,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <summary>
         /// The shop item group for the reinforce walls display.
         /// </summary>
-        public ShopItemGroup wallsItemGroup;
+        public ShopItemGroup floorItemGroup;
         /// <summary>
         /// The shop item group for the move speed display.
         /// </summary>
@@ -111,6 +115,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// Return true if player is in shop bubble, or false if not.
         /// </summary>
         private bool playerInShopBubble = false;
+        /// <summary>
+        /// The default value the description box has.
+        /// </summary>
+        private string defaultDescription;
         #endregion
 
         private void Awake() {
@@ -128,22 +136,27 @@ namespace Assets.HolyTreasureScripts.UI {
             gameMan = GameManager.Instance;
             playIn = PlayerInventory.Instance;
             baseLightPrice = price_light;
-            baseWallPrice = price_walls;
-            playIn.UpdateMoney(10000);
+            baseWallPrice = price_floor;
             UpdatePriceText(text_oxygen, price_oxygen);
             UpdatePriceText(text_tool, price_tool);
             UpdatePriceText(text_light, price_light);
-            UpdatePriceText(text_walls, price_walls);
-            UpdatePriceText(text_walls, price_walls);
+            UpdatePriceText(text_floor, price_floor);
+            UpdatePriceText(text_floor, price_floor);
             toolItemGroup.ChangeDisplay("Upgrade to: Trowel", true);
+            defaultDescription = descriptionBox.text;
         }
 
         private void Update() {
             if (playerInShopBubble) {
-                if (Input.GetKeyDown(KeyCode.Space)) {
-                    shopCanvas.SetActive(!shopCanvas.activeInHierarchy);
-                    useCon.ableToMove = !useCon.ableToMove;
-                    useCon.interactionCanvas.SetActive(!useCon.interactionCanvas.activeInHierarchy);
+                if (!useCon.onPile) {
+                    if (Input.GetKeyDown(KeyCode.Space)) {
+                        shopCanvas.SetActive(!shopCanvas.activeInHierarchy);
+                        useCon.ableToMove = !useCon.ableToMove;
+                        if (useCon.interactionCanvas.activeInHierarchy) {
+                            useCon.interactionCanvas.SetActive(!useCon.interactionCanvas.activeInHierarchy);
+                            useCon.commandText.text = "SHOP";
+                        }
+                    } 
                 }
             }
         }
@@ -214,14 +227,14 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <summary>
         /// Reinforces the walls so that they don't break as easily.
         /// </summary>
-        public void ReinforceWalls() {
+        public void ReinforceFloor() {
             if (!gameMan.reinforced) {
-                if (SpendMoney(price_walls)) {
+                if (SpendMoney(price_floor)) {
                     gameMan.reinforced = true;
                     gameMan.UpdateMineStatus(gameMan.minesExploded);
-                    wallsItemGroup.ChangeDisplay("Walls Reinforced", "-");
-                    price_walls = 0;
-                    UpdatePriceText(text_walls, price_walls);
+                    floorItemGroup.ChangeDisplay("Floor Reinforced", "-");
+                    price_floor = 0;
+                    UpdatePriceText(text_floor, price_floor);
                 }
             }
         }
@@ -259,7 +272,8 @@ namespace Assets.HolyTreasureScripts.UI {
                 playIn.UpdateMoney(-moneyBeingSpent);
                 output = true;
             } else {
-                Debug.LogError("The player does not have enough money to buy this item.");
+                descriptionBox.text = "You don't have enough money for this.";
+                // Debug.LogError("The player does not have enough money to buy this item.");
             }
 
             return output;
@@ -276,6 +290,19 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </param>
         public void UpdatePriceText (Text priceText, int newValue) {
             priceText.text = "Price: -$" + newValue;
+        }
+
+        /// <summary>
+        /// Changes the Description Box text.
+        /// </summary>
+        /// <param name="newMessage">
+        /// The new message that will be displayed.
+        /// </param>
+        public void ChangeDescriptionBox(string newMessage) {
+            descriptionBox.text = newMessage;
+            if (newMessage == string.Empty) {
+                descriptionBox.text = defaultDescription;
+            }
         }
 
         private void OnTriggerEnter(Collider other) {
