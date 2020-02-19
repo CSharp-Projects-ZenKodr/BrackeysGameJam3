@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.HolyTreasureScripts.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,17 @@ namespace Assets.HolyTreasureScripts {
             } else {
                 Debug.LogError("There is more than one Player Inven class in the scene!");
             }
+        }
+
+        /// <summary>
+        /// Updates the player's money.
+        /// </summary>
+        /// <param name="val">
+        /// The incoming monetary value.
+        /// </param>
+        public void UpdateMoney(int val) {
+            currentMoney += val;
+            GameplayUI.Instance.UpdateMoneyValue(currentMoney);
         }
     }
 }

@@ -7,13 +7,21 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
     [RequireComponent(typeof(ThirdPersonCharacter))]
     public class ThirdPersonUserControl : MonoBehaviour {
         /// <summary>
+        /// The canvas above the player's head used for interaction.
+        /// </summary>
+        public GameObject interactionCanvas;
+        /// <summary>
+        /// The digging tools that are at the player's disposal.
+        /// </summary>
+        public GameObject[] diggingTools;
+        /// <summary>
         /// Return true if controller is able to move, or false if not.
         /// </summary>
         public bool ableToMove = true;
         /// <summary>
-        /// The canvas above the player's head used for interaction.
+        /// The base, default Dig Rate.
         /// </summary>
-        public GameObject interactionCanvas;
+        public float baseDigRate;
 
         /// <summary>
         /// The command text childed to the interaction canvas.
@@ -23,6 +31,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// Retrun true if the controller should cround, or false if not.
         /// </summary>
         public bool crouch { get; set; }
+        /// <summary>
+        /// The player's current digRate.
+        /// </summary>
+        public float digRate { get; private set; }
+        /// <summary>
+        /// The player's current tool ID.
+        /// </summary>
+        public int currentToolID { get; set; }
 
         private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
         private Transform m_Cam;                  // A reference to the main camera in the scenes transform
@@ -46,16 +62,18 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
             m_Character = GetComponent<ThirdPersonCharacter>();
 
             commandText = interactionCanvas.transform.GetChild(0).GetComponent<Text>();
+
+            digRate = baseDigRate;
+            SwitchTools(4);
+            currentToolID = 4;
         }
-
-
+        
         private void Update() {
             if (!m_Jump) {
                 //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
             }
         }
-
-
+        
         // Fixed update is called in sync with physics
         private void FixedUpdate() {
             if (ableToMove) {
@@ -85,6 +103,25 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
             }
             else {
                 m_Character.Move(Vector3.zero, crouch, false);
+            }
+        }
+
+        /// <summary>
+        /// Switches the player's tools.
+        /// </summary>
+        /// <param name="toolID">
+        /// The ID of the Tool being switched to.
+        /// </param>
+        public void SwitchTools(int toolID) {
+            for (int i = 0; i < diggingTools.Length; i++) {
+                Debug.Log("I");
+                if (i == toolID) {
+                    diggingTools[i].SetActive(true);
+                    digRate = baseDigRate * (i + 2);
+                    currentToolID = i;
+                } else {
+                    diggingTools[i].SetActive(false);
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// <summary>
         /// How many mines have been exploded thus far.
         /// </summary>
-        public int minesExploded { get; set; }
+        public int minesExploded { get; private set; }
 
         /// <summary>
         /// The transform that holds all the mine icons.
@@ -37,6 +37,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// The ground floors in the game.
         /// </summary>
         public GameObject[] groundFloors;
+        /// <summary>
+        /// The Big Light that can illuminate the entire cave.
+        /// </summary>
+        public Light bigLight;
 
         /// <summary>
         /// The Gameplay UI class in the scene.
@@ -50,6 +54,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// The Scene Transitioner in the scene.
         /// </summary>
         private SceneTransitioner sceneTran;
+        /// <summary>
+        /// The Shop class in the scene.
+        /// </summary>
+        private Shop shop;
         /// <summary>
         /// A collection of all the mine icons.
         /// </summary>
@@ -90,6 +98,7 @@ namespace Assets.HolyTreasureScripts.GameStructure {
             gameUI = GameplayUI.Instance;
             useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
             sceneTran = SceneTransitioner.Instance;
+            shop = Shop.Instance;
         }
 
         /// <summary>
@@ -139,10 +148,26 @@ namespace Assets.HolyTreasureScripts.GameStructure {
 
         private void ResetMineStatusForNewFloor() {
             Debug.Log("Next Floor");
+            //TODO: Have Oxygen deplete quicker for each floor
+            bigLight.enabled = false;
             groundFloors[currentFloor].SetActive(false);
             currentFloor++;
             gameUI.UpdateFloorText(currentFloor + 1);
+
+            shop.price_light = shop.baseLightPrice * (currentFloor + 1);
+            shop.UpdatePriceText(shop.text_light, shop.price_light);
+            shop.lightItemGroup.ChangeDisplay("Shine Light", "BUY");
+
+            shop.price_walls = shop.baseWallPrice * (currentFloor + 1);
+            shop.UpdatePriceText(shop.text_walls, shop.price_walls);
+            shop.wallsItemGroup.ChangeDisplay("Reinforce Walls","BUY");
+
+
             minesExploded = 0;
+            reinforced = false;
+            foreach (Image mine in mineIcons) {
+                mine.enabled = false;
+            }
             foreach (Image hit in hitIcons) {
                 hit.enabled = false;
             }

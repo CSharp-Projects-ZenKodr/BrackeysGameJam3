@@ -21,11 +21,11 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// The particle system that is supposed to represent dirt being dug up.
         /// </summary>
         public ParticleSystem diggingPS;
+        
         /// <summary>
         /// The rate at which the player digs.
         /// </summary>
-        public float digRate;
-
+        private float digRate;
         /// <summary>
         /// The controller attached to the player.
         /// </summary>
@@ -137,6 +137,7 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void OnTriggerEnter(Collider other) {
             if (other.tag == "Player") {
                 useCon = other.GetComponent<ThirdPersonUserControl>();
+                digRate = useCon.digRate;
                 useCon.interactionCanvas.SetActive(true);
                 useCon.commandText.text = "DIG!";
                 playerCanDig = true;

@@ -170,8 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prizeValue: 0
   unearthedPrizeValue: 3
-  exclusiveMaxValue: 201
-  inclusiveMinValue: 100
+  exclusiveMaxValue: 401
+  inclusiveMinValue: 200
 --- !u!198 &198882152237128522
 ParticleSystem:
   m_ObjectHideFlags: 1

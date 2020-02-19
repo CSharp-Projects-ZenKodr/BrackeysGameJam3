@@ -1,15 +1,31 @@
-﻿using Assets.HolyTreasureScripts.UI;
+﻿using Assets.HolyTreasureScripts.GameStructure;
+using Assets.HolyTreasureScripts.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.ThirdPerson;
-
+//TODO: There is a bug when the shop and a hole overlap
 namespace Assets.HolyTreasureScripts.UI {
     public class Shop : MonoBehaviour {
 
         #region Variables
+        /// <summary>
+        /// The static instance of this class.
+        /// </summary>
+        public static Shop Instance;
+        
+        /// <summary>
+        /// The base, starting price of the big light.
+        /// </summary>
+        public int baseLightPrice { get; private set; }
+        /// <summary>
+        /// The base, starting price of reinforcing walls.
+        /// </summary>
+        public int baseWallPrice { get; private set; }
+
         /// <summary>
         /// The price of oxygen.
         /// </summary>
@@ -31,6 +47,42 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         public int price_speed;
         /// <summary>
+        /// The Text component that displays the oxygen price.
+        /// </summary>
+        public Text text_oxygen;
+        /// <summary>
+        /// The Text component that displays the upgrade tool price.
+        /// </summary>
+        public Text text_tool;
+        /// <summary>
+        /// The Text component that displays the light price.
+        /// </summary>
+        public Text text_light;
+        /// <summary>
+        /// The Text component that displays the reinforce walls price.
+        /// </summary>
+        public Text text_walls;
+        /// <summary>
+        /// The Text component that displays the upgrade speed price.
+        /// </summary>
+        public Text text_speed;
+        /// <summary>
+        /// The shop item group for the upgrade tool display.
+        /// </summary>
+        public ShopItemGroup toolItemGroup;
+        /// <summary>
+        /// The shop item group for the upgrade tool display.
+        /// </summary>
+        public ShopItemGroup lightItemGroup;
+        /// <summary>
+        /// The shop item group for the reinforce walls display.
+        /// </summary>
+        public ShopItemGroup wallsItemGroup;
+        /// <summary>
+        /// The shop item group for the move speed display.
+        /// </summary>
+        public ShopItemGroup speedItemGroup;
+        /// <summary>
         /// The Canvas that holds the shop UI data.
         /// </summary>
         public GameObject shopCanvas;
@@ -40,18 +92,50 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         private ThirdPersonUserControl useCon;
         /// <summary>
+        /// The third person character the player controls.
+        /// </summary>
+        private ThirdPersonCharacter character;
+        /// <summary>
         /// The Gameplay UI in the scene.
         /// </summary>
         private GameplayUI gameUI;
+        /// <summary>
+        /// The Game Manager in the scene.
+        /// </summary>
+        private GameManager gameMan;
+        /// <summary>
+        /// The inventory the player has on them.
+        /// </summary>
+        private PlayerInventory playIn;
         /// <summary>
         /// Return true if player is in shop bubble, or false if not.
         /// </summary>
         private bool playerInShopBubble = false;
         #endregion
 
+        private void Awake() {
+            if (Instance == null) {
+                Instance = this;
+            } else {
+                Debug.LogError("There is more than one instance of the Shop class in the scene!");
+            }
+        }
+
         private void Start() {
             useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
+            character = useCon.GetComponent<ThirdPersonCharacter>();
             gameUI = GameplayUI.Instance;
+            gameMan = GameManager.Instance;
+            playIn = PlayerInventory.Instance;
+            baseLightPrice = price_light;
+            baseWallPrice = price_walls;
+            playIn.UpdateMoney(10000);
+            UpdatePriceText(text_oxygen, price_oxygen);
+            UpdatePriceText(text_tool, price_tool);
+            UpdatePriceText(text_light, price_light);
+            UpdatePriceText(text_walls, price_walls);
+            UpdatePriceText(text_walls, price_walls);
+            toolItemGroup.ChangeDisplay("Upgrade to: Trowel", true);
         }
 
         private void Update() {
@@ -68,35 +152,130 @@ namespace Assets.HolyTreasureScripts.UI {
         /// Adds half the maximum oxygen value to the current oxygen.
         /// </summary>
         public void BuyOxygen() {
+            if (SpendMoney(price_oxygen)) {
+                if (gameUI.oxygenValue > 0.5f) {
+                    gameUI.oxygenValue = 1;
+                } else {
+                    gameUI.oxygenValue += 0.5f;
+                }
 
+                price_oxygen *= 2;
+                UpdatePriceText(text_oxygen, price_oxygen);
+            }
         }
 
         /// <summary>
         /// Upgrades the player's tool so that they dig faster.
         /// </summary>
         public void UpgradeTool () {
-
+            Debug.Log(useCon.currentToolID);
+            if (useCon.currentToolID != 2) {
+                if (SpendMoney(price_tool)) {
+                    switch (useCon.currentToolID) {
+                        case 0:
+                            useCon.SwitchTools(1);
+                            toolItemGroup.ChangeDisplay("Upgrade to: Drill", true);
+                            price_tool *= 2;
+                            break;
+                        case 1:
+                            useCon.SwitchTools(2);
+                            toolItemGroup.ChangeDisplay("Cannot Upgrade", "-");
+                            price_tool = 0;
+                            break;
+                        case 2:
+                            //Do Nothing, player has best tool, perhaps disable button.
+                            break;
+                        default:
+                            useCon.SwitchTools(0);
+                            toolItemGroup.ChangeDisplay("Upgrade to: Shovel", true);
+                            price_tool *= 2;
+                            break;
+                    }
+                    
+                    UpdatePriceText(text_tool, price_tool);
+                }
+            }
         }
 
         /// <summary>
         /// Shines a big light so the player can see better.
         /// </summary>
         public void ShineLight () {
-
+            if (!gameMan.bigLight.enabled) {
+                if (SpendMoney(price_light)) {
+                    gameMan.bigLight.enabled = true;
+                    lightItemGroup.ChangeDisplay("Light is Shining", "-");
+                    price_light = 0;
+                    UpdatePriceText(text_light, price_light);
+                }
+            }
         }
-        
+
         /// <summary>
         /// Reinforces the walls so that they don't break as easily.
         /// </summary>
         public void ReinforceWalls() {
-
+            if (!gameMan.reinforced) {
+                if (SpendMoney(price_walls)) {
+                    gameMan.reinforced = true;
+                    gameMan.UpdateMineStatus(gameMan.minesExploded);
+                    wallsItemGroup.ChangeDisplay("Walls Reinforced", "-");
+                    price_walls = 0;
+                    UpdatePriceText(text_walls, price_walls);
+                }
+            }
         }
 
         /// <summary>
         /// Upgrades the player's movement.
         /// </summary>
         public void UpgradeMoveSpeed() {
+            if (character.m_MoveSpeedMultiplier < 3) {
+                if (SpendMoney(price_speed)) {
+                    character.m_MoveSpeedMultiplier += 0.5f;
 
+                    if (character.m_MoveSpeedMultiplier == 3) {
+                        speedItemGroup.ChangeDisplay("Speed Fully Upgraded","-");
+                        price_speed = 0;
+                    } else {
+                        price_speed *= 2;
+                    }
+
+                    UpdatePriceText(text_speed, price_speed);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Spends the player's money.
+        /// </summary>
+        /// <param name="moneyBeingSpent">
+        /// The money being spent (price).
+        /// </param>
+        private bool SpendMoney(int moneyBeingSpent) {
+            bool output = false;
+
+            if (playIn.currentMoney >= moneyBeingSpent) {
+                playIn.UpdateMoney(-moneyBeingSpent);
+                output = true;
+            } else {
+                Debug.LogError("The player does not have enough money to buy this item.");
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Updates a specific price text.
+        /// </summary>
+        /// <param name="priceText">
+        /// The price text being updated.
+        /// </param>
+        /// <param name="newValue">
+        /// The new value the price text will have.
+        /// </param>
+        public void UpdatePriceText (Text priceText, int newValue) {
+            priceText.text = "Price: -$" + newValue;
         }
 
         private void OnTriggerEnter(Collider other) {

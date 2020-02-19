@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
-using Assets.HolyTreasureScripts.Digging;
-using Assets.HolyTreasureScripts.UI;
 
 namespace Assets.HolyTreasureScripts.Digging {
     public class TreasureChest : DigPrize {
@@ -32,8 +29,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                 if (!treasureGot) {
                     attachedAnimator.SetTrigger("Open");
 
-                    PlayerInventory.Instance.currentMoney += prizeValue;
-                    GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
+                    PlayerInventory.Instance.UpdateMoney(prizeValue);
                     treasureGot = true;
                 }
             }

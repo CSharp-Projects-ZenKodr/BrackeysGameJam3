@@ -37,8 +37,7 @@ namespace Assets.HolyTreasureScripts.Digging {
             UnearthPrize();
             if (unearthed) {
                 if (!treasureGot) {
-                    PlayerInventory.Instance.currentMoney += prizeValue;
-                    GameplayUI.Instance.UpdateMoneyValue(PlayerInventory.Instance.currentMoney);
+                    PlayerInventory.Instance.UpdateMoney(prizeValue);
                     psMoney.transform.parent = null;
                     psMoney.Play();
                     Destroy(gameObject);
