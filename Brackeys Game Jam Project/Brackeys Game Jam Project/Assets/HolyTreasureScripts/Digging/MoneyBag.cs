@@ -1,4 +1,5 @@
 ﻿using Assets.HolyTreasureScripts.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using UnityEngine;
 namespace Assets.HolyTreasureScripts.Digging {
     public class MoneyBag : DigPrize {
         #region Variables
+
         /// <summary>
         /// The maximum int value (exclusive) this bag could be worth.
         /// </summary>
@@ -30,7 +32,7 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void Start() {
             GetDigPrizeData();
             psMoney = transform.GetChild(0).GetComponent<ParticleSystem>();
-            prizeValue = Random.Range(inclusiveMinValue, exclusiveMaxValue);
+            prizeValue = UnityEngine.Random.Range(inclusiveMinValue, exclusiveMaxValue);
         }
 
         private void Update() {

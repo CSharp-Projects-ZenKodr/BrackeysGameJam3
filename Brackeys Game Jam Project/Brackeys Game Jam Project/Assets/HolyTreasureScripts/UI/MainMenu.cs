@@ -67,6 +67,7 @@ namespace Assets.HolyTreasureScripts.UI {
         IEnumerator DestroyButton() {
             yield return new WaitForSeconds(timeBeforeButtonDestroy);
             transitioner = activeHole.AddComponent<SceneTransitioner>();
+            transitioner.mainMenuScene = true;
             activeHole.transform.parent = transform;
             activeHole.transform.SetAsLastSibling();
             transitioner.nextSceneName = nextScene;

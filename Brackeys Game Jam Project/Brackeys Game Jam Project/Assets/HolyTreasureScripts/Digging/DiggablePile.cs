@@ -45,7 +45,7 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// <summary>
         /// A vector 3 where all of its values are thirty.
         /// </summary>
-        private Vector3 Vector3Thirty = new Vector3(30, 30, 30);
+        private Vector3 Vector3Quarter = new Vector3(0.25f, 0.25f, 0.25f);
         /// <summary>
         /// The prize class of the Dig Prize.
         /// </summary>
@@ -71,7 +71,6 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void GetInitialData() {
             attachedRender = GetComponent<Renderer>();
             pileMaterial = attachedRender.material;
-            //Debug.Log(pileMaterial.color);
             
             initialPileScale = transform.localScale;
             fullyDugPileScale = new Vector3(initialPileScale.x, initialPileScale.y, 0);
@@ -95,7 +94,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                         useCon.crouch = true;
                         dugValue += digRate * Time.deltaTime;
                         transform.localScale = Vector3.Lerp(initialPileScale, fullyDugPileScale, dugValue);
-                        hole.localScale = Vector3.Lerp(Vector3.zero, Vector3Thirty, dugValue);
+                        hole.localScale = Vector3.Lerp(Vector3.zero, Vector3Quarter, dugValue);
                     }
                     if (Input.GetKeyUp(KeyCode.Space)) {
                         useCon.ableToMove = true;
@@ -123,15 +122,15 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// <param name="specialPrize">
         /// Return true if prize is special, or false if not.
         /// </param>
-        public void AddPrize (GameObject prize, bool specialPrize) {
+        public GameObject AddPrize (GameObject prize, bool specialPrize) {
             GetInitialData();
             GameObject a = Instantiate(prize, prizeParent);
             prizeClass = a.GetComponent<DigPrize>();
             if (specialPrize) {
                 pileMaterial.color = new Color(.624f, .624f, .624f, 1f);
-                //pileMaterial.SetColor("Main Color", new Color(.624f, .624f, .624f, 1));
                 Debug.Log("I'm Special!", gameObject);
             }
+            return a;
         }
 
         private void OnTriggerEnter(Collider other) {

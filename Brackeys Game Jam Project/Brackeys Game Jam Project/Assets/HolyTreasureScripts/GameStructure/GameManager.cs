@@ -148,21 +148,27 @@ namespace Assets.HolyTreasureScripts.GameStructure {
 
         private void ResetMineStatusForNewFloor() {
             Debug.Log("Next Floor");
-            
-            bigLight.enabled = false;
+
+            if (bigLight != null) {
+                bigLight.enabled = false; 
+            }
             groundFloors[currentFloor].SetActive(false);
             currentFloor++;
 
             gameUI.UpdateFloorText(currentFloor + 1);
             gameUI.oxygenDecayRate *= 2;
 
-            shop.price_light = shop.baseLightPrice * (currentFloor + 1);
-            shop.UpdatePriceText(shop.text_light, shop.price_light);
-            shop.lightItemGroup.ChangeDisplay("Shine Light", "BUY");
+            if (bigLight != null) {
+                shop.price_light = shop.baseLightPrice * (currentFloor + 1);
+                shop.UpdatePriceText(shop.text_light, shop.price_light);
+                shop.lightItemGroup.ChangeDisplay("Shine Light", "BUY"); 
+            }
 
-            shop.price_floor = shop.baseWallPrice * (currentFloor + 1);
-            shop.UpdatePriceText(shop.text_floor, shop.price_floor);
-            shop.floorItemGroup.ChangeDisplay("Reinforce Floor","BUY");
+            if (bigLight != null) {
+                shop.price_floor = shop.baseWallPrice * (currentFloor + 1);
+                shop.UpdatePriceText(shop.text_floor, shop.price_floor);
+                shop.floorItemGroup.ChangeDisplay("Reinforce Floor", "BUY"); 
+            }
 
 
             minesExploded = 0;

@@ -7,6 +7,7 @@ TagManager:
   - Shootable
   - Chest
   - Diggable Pile
+  - Waypoint
   layers:
   - Default
   - TransparentFX

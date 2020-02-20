@@ -142,7 +142,9 @@ namespace Assets.HolyTreasureScripts.UI {
             UpdatePriceText(text_light, price_light);
             UpdatePriceText(text_floor, price_floor);
             UpdatePriceText(text_floor, price_floor);
-            toolItemGroup.ChangeDisplay("Upgrade to: Trowel", true);
+            if (toolItemGroup != null) {
+                toolItemGroup.ChangeDisplay("Upgrade to: Trowel", true); 
+            }
             defaultDescription = descriptionBox.text;
         }
 
@@ -289,7 +291,9 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The new value the price text will have.
         /// </param>
         public void UpdatePriceText (Text priceText, int newValue) {
-            priceText.text = "Price: -$" + newValue;
+            if (priceText != null) {
+                priceText.text = "Price: -$" + newValue; 
+            }
         }
 
         /// <summary>
