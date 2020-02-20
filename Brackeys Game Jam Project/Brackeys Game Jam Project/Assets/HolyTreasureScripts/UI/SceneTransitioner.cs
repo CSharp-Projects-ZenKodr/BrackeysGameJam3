@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.ThirdPerson;
 
 namespace Assets.HolyTreasureScripts.UI {
     public class SceneTransitioner : MonoBehaviour {
@@ -23,6 +24,15 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The name of the scene we will be transitioning to.
         /// </summary>
         public string nextSceneName;
+
+        /// <summary>
+        /// The user controller in the scene;
+        /// </summary>
+        private ThirdPersonUserControl useCon;
+        /// <summary>
+        /// The GameplayUI in the scene;
+        /// </summary>
+        private GameplayUI gameUI;
         #endregion
 
         private void Awake() {
@@ -34,6 +44,8 @@ namespace Assets.HolyTreasureScripts.UI {
         }
 
         private void Start() {
+            useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
+            gameUI = GameplayUI.Instance;
             attachedAnimator = GetComponent<Animator>();
         }
 
@@ -49,7 +61,8 @@ namespace Assets.HolyTreasureScripts.UI {
         /// What should happen once the scene is done fading in.
         /// </summary>
         public void FadeInComplete() {
-            //TODO: Add more stuff here like allowing player to move.
+            useCon.ableToMove = true;
+            gameUI.drainOxygen = true;
         }
     }
 }

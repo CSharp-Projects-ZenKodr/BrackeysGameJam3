@@ -17,7 +17,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// <summary>
         /// Return true if controller is able to move, or false if not.
         /// </summary>
-        public bool ableToMove = true;
+        public bool ableToMove = false;
         /// <summary>
         /// The base, default Dig Rate.
         /// </summary>

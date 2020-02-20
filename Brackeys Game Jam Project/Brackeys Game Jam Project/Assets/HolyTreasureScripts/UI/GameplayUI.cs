@@ -17,6 +17,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The flaot representing how much oxygen the player has left.
         /// </summary>
         public float oxygenValue { get; set; }
+        /// <summary>
+        /// Return true if oxygen should drain, or false if not.
+        /// </summary>
+        public bool drainOxygen { get; set; }
 
         /// <summary>
         /// The image that represents how much oxygen the player has left.
@@ -49,7 +53,9 @@ namespace Assets.HolyTreasureScripts.UI {
         }
 
         private void Update() {
-            YourOxygenIsRunningLow();
+            if (drainOxygen) {
+                YourOxygenIsRunningLow(); 
+            }
         }
 
         private void YourOxygenIsRunningLow() {
