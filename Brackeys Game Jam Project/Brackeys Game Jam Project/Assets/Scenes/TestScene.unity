@@ -1431,6 +1431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: GameOverUI
+  tutorialScene: 0
 --- !u!1 &294699311
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,10 +1558,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   price_oxygen: 5000
-  price_tool: 1000
-  price_light: 500
-  price_floor: 2000
-  price_speed: 1000
+  price_tool: 2000
+  price_light: 1000
+  price_floor: 4000
+  price_speed: 4000
   text_oxygen: {fileID: 1620870195}
   text_tool: {fileID: 486644313}
   text_light: {fileID: 1883946112}

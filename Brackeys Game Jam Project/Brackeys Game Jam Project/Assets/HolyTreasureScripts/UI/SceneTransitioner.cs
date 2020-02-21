@@ -63,7 +63,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// What should happen once the scene is done fading out.
         /// </summary>
         public void FadeOutComplete() {
-            //TODO: Add more stuff here like saving high score
+            PlayerPrefs.SetInt("ObtainedScore", PlayerInventory.Instance.currentMoney);
             SceneManager.LoadScene(nextSceneName);
         }
 

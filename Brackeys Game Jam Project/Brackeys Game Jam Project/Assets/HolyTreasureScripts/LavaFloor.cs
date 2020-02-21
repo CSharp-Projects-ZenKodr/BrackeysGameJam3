@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.HolyTreasureScripts.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,8 @@ namespace Assets.HolyTreasureScripts {
                 Camera.main.transform.parent = null;
 
                 Debug.Log("Killed by Lava");
+
+                SceneTransitioner.Instance.attachedAnimator.SetTrigger("FadeOut");
             }
         }
     }
