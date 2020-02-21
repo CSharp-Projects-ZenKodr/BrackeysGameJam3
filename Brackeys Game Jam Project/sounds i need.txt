@@ -1,14 +1,14 @@
--Button Switching sound
--Dig sound
--Hole Swallowing sound
--Walking sound
--Gaining money sound
--Explosion Sound
--Floor breaking sound
--Light turning on sound
--Fixing/Tinkering Sound
--Heartbeat Sound
++Button Switching sound
++Dig sound*
++Hole Swallowing sound*
++Walking sound*
++Gaining money sound
++Explosion Sound
++Floor breaking sound*
++Light turning on sound*
++Fixing/Tinkering Sound*
++Heartbeat Sound*
 
--Menu Music
--Game over music
++Menu Music*
+-Game over music*
 -Game music

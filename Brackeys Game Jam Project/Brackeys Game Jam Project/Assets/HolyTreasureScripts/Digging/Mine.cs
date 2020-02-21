@@ -1,4 +1,5 @@
-﻿using Assets.HolyTreasureScripts.GameStructure;
+﻿using Assets.HolyTreasureScripts.Audio;
+using Assets.HolyTreasureScripts.GameStructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,11 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// <summary>
         /// The Game Manager in the scene.
         /// </summary>
-        private GameManager manager;
+        private GameManager gameMan;
+        /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
         /// <summary>
         /// Return true if the mine exploded, or false if not.
         /// </summary>
@@ -26,14 +31,17 @@ namespace Assets.HolyTreasureScripts.Digging {
 
         private void Start() {
             GetDigPrizeData();
-            manager = GameManager.Instance;
+            gameMan = GameManager.Instance;
+            audioMan = AudioManager.Instance;
         }
 
         private void Update() {
             UnearthPrize();
             if (unearthed) {
                 if (!mineExploded) {
-                    manager.UpdateMineStatus(manager.minesExploded + 1);
+                    audioMan.PlaySound("Explosion");
+
+                    gameMan.UpdateMineStatus(gameMan.minesExploded + 1);
 
                     GameObject eps = Instantiate(bigExplosionEffect, transform.position, transform.rotation);
 

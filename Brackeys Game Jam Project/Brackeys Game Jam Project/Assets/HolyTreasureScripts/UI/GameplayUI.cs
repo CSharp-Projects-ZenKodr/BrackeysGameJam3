@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.HolyTreasureScripts.Audio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,15 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The rate at which the oxygen will decay.
         /// </summary>
         public float oxygenDecayRate = 0.1f;
+
+        /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
+        /// <summary>
+        /// Return true if audio is already playing, or false if not.
+        /// </summary>
+        private bool audioIsAlreadyPlaying = false;
         #endregion
 
         private void Awake() {
@@ -50,6 +60,7 @@ namespace Assets.HolyTreasureScripts.UI {
 
         private void Start() {
             oxygenValue = 1;
+            audioMan = AudioManager.Instance;
         }
 
         private void Update() {
@@ -61,6 +72,15 @@ namespace Assets.HolyTreasureScripts.UI {
         private void YourOxygenIsRunningLow() {
             oxygenValue -= oxygenDecayRate * Time.deltaTime;
             oxygenFill.fillAmount = oxygenValue;
+            if (oxygenValue < 0.333f) {
+                if (!audioIsAlreadyPlaying) {
+                    audioMan.PlaySound("Heart");
+                    audioIsAlreadyPlaying = true;
+                }
+            } else {
+                audioMan.StopSound("Heart");
+                audioIsAlreadyPlaying = false;
+            }
         }
 
         /// <summary>

@@ -170,6 +170,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prizeValue: 0
   unearthedPrizeValue: 3
+  collectVolume: 0.2
+  collectPitch: 0.35
   exclusiveMaxValue: 401
   inclusiveMinValue: 200
 --- !u!198 &198882152237128522

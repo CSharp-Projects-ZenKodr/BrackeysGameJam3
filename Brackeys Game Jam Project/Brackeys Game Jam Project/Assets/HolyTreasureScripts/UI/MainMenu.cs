@@ -5,11 +5,16 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Assets.HolyTreasureScripts.Audio;
 
 namespace Assets.HolyTreasureScripts.UI {
     public class MainMenu : MonoBehaviour {
 
         #region Variables
+        /// <summary>
+        /// The Credits of the game.
+        /// </summary>
+        public GameObject credits;
         /// <summary>
         /// The speed at which the shovel will move.
         /// </summary>
@@ -22,11 +27,19 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The time it takes before the active button is destoryed.
         /// </summary>
         public float timeBeforeButtonDestroy;
+        /// <summary>
+        /// The rate at which the music fades out.
+        /// </summary>
+        public float fadeOutRate;
 
         /// <summary>
         /// The Scene Transitioner within the scene.
         /// </summary>
         private SceneTransitioner transitioner;
+        /// <summary>
+        /// The Audio Manager within the scene.
+        /// </summary>
+        private AudioManager audioMan;
         /// <summary>
         /// The currently active shovel.
         /// </summary>
@@ -40,6 +53,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         private GameObject activeHole;
         /// <summary>
+        /// The audio source that plays the Main Menu Music.
+        /// </summary>
+        private AudioSource mainMenuMusic;
+        /// <summary>
         /// Return true if scene is changing, or false if not.
         /// </summary>
         private bool changingScene;
@@ -51,7 +68,16 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The name of the next scene.
         /// </summary>
         private string nextScene;
+        /// <summary>
+        /// Return true if fading out, or false if not.
+        /// </summary>
+        private bool fadeOut = false;
         #endregion
+
+        private void Start() {
+            audioMan = AudioManager.Instance;
+            mainMenuMusic = audioMan.PlaySound("MainMusic");
+        }
 
         private void Update() {
             if (changingScene) {
@@ -62,9 +88,15 @@ namespace Assets.HolyTreasureScripts.UI {
                     checkForShovelActivation = false;
                 }
             }
+            if (fadeOut) {
+                if (mainMenuMusic.volume > 0) {
+                    mainMenuMusic.volume -= fadeOutRate;
+                }
+            }
         }
 
         IEnumerator DestroyButton() {
+            audioMan.PlaySound("Swallow");
             yield return new WaitForSeconds(timeBeforeButtonDestroy);
             transitioner = activeHole.AddComponent<SceneTransitioner>();
             transitioner.mainMenuScene = true;
@@ -90,15 +122,15 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <param name="toggle">
         /// The new status of the shovel.
         /// </param>
-        public void ToggleShovel (GameObject shovelIcon) {
+        public void ToggleShovel(GameObject shovelIcon) {
             if (!changingScene) {
                 shovelIcon.SetActive(!shovelIcon.activeInHierarchy);
                 if (shovelIcon.activeInHierarchy) {
                     activeShovel = shovelIcon;
-                }
-                else {
+                    audioMan.PlaySound("ButtonBoop");
+                } else {
                     activeShovel = null;
-                } 
+                }
             }
         }
 
@@ -108,7 +140,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <param name="button">
         /// The button to become active.
         /// </param>
-        public void SetActiveButton (GameObject button) {
+        public void SetActiveButton(GameObject button) {
             activeButton = button;
         }
 
@@ -118,7 +150,7 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <param name="hole">
         /// The hole to become activee.
         /// </param>
-        public void SetActiveHole (GameObject hole) {
+        public void SetActiveHole(GameObject hole) {
             activeHole = hole;
         }
 
@@ -128,9 +160,17 @@ namespace Assets.HolyTreasureScripts.UI {
         /// <param name="sceneName">
         /// The scene that is being transitioned to.
         /// </param>
-        public void ChangeScene (string sceneName) {
+        public void ChangeScene(string sceneName) {
             nextScene = sceneName;
+            fadeOut = true;
             changingScene = true;
+        }
+
+        /// <summary>
+        /// Toggles the credits on and off.
+        /// </summary>
+        public void ToggleCredits() {
+            credits.SetActive(!credits.activeInHierarchy);
         }
 
         /// <summary>

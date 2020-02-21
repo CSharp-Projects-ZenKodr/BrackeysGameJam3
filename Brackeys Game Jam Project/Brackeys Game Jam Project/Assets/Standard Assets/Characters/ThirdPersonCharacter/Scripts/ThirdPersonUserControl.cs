@@ -15,6 +15,14 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// </summary>
         public GameObject[] diggingTools;
         /// <summary>
+        /// The Audio for Foot 1.
+        /// </summary>
+        public AudioSource foot1;
+        /// <summary>
+        /// The Audio for Foot 2.
+        /// </summary>
+        public AudioSource foot2;
+        /// <summary>
         /// Return true if controller is able to move, or false if not.
         /// </summary>
         public bool ableToMove = false;
@@ -49,7 +57,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         private Vector3 m_CamForward;             // The current forward direction of the camera
         private Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
-
+        private bool audioStartingPlaying = false;
 
         private void Start() {
             // get the transform of the main camera
@@ -86,6 +94,18 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
                 float v = Mathf.Abs( CrossPlatformInputManager.GetAxis("Vertical"));
                 //bool crouch = Input.GetKey(KeyCode.C);
 
+                if (v != 0) {
+                    if (!audioStartingPlaying) {
+                        foot1.Play();
+                        foot2.Play();
+                        audioStartingPlaying = true;
+                    }
+                } else {
+                    foot1.Stop();
+                    foot2.Stop();
+                    audioStartingPlaying = false;
+                }
+
                 // calculate move direction to pass to character
                 if (m_Cam != null) {
                     // calculate camera relative direction to move:
@@ -104,9 +124,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
                 // pass all parameters to the character control script
                 m_Character.Move(m_Move, crouch, m_Jump);
                 m_Jump = false;
-            }
-            else {
+            } else {
                 m_Character.Move(Vector3.zero, crouch, false);
+                foot1.Stop();
+                foot2.Stop();
+                audioStartingPlaying = false;
             }
         }
 

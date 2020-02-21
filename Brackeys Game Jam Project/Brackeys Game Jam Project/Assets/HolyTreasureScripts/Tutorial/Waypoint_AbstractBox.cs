@@ -45,7 +45,9 @@ namespace Assets.HolyTreasureScripts.Tutorial {
         /// The objects new activation status.
         /// </param>
         private void ToggleActivationStatuses (bool newStatus) {
-            correspondingDirection.gameObject.SetActive(newStatus);
+            if (correspondingDirection != null) {
+                correspondingDirection.gameObject.SetActive(newStatus); 
+            }
         }
 
         private void OnTriggerEnter(Collider other) {

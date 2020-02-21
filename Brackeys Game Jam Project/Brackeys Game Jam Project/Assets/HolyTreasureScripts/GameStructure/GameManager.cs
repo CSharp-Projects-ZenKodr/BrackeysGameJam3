@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.ThirdPerson;
 using Assets.HolyTreasureScripts.UI;
+using Assets.HolyTreasureScripts.Audio;
 
 namespace Assets.HolyTreasureScripts.GameStructure {
     public class GameManager : MonoBehaviour {
@@ -55,6 +56,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// </summary>
         private SceneTransitioner sceneTran;
         /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
+        /// <summary>
         /// The Shop class in the scene.
         /// </summary>
         private Shop shop;
@@ -99,6 +104,7 @@ namespace Assets.HolyTreasureScripts.GameStructure {
             useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
             sceneTran = SceneTransitioner.Instance;
             shop = Shop.Instance;
+            audioMan = AudioManager.Instance;
         }
 
         /// <summary>
@@ -152,6 +158,7 @@ namespace Assets.HolyTreasureScripts.GameStructure {
             if (bigLight != null) {
                 bigLight.enabled = false; 
             }
+            audioMan.PlaySound("Break");
             groundFloors[currentFloor].SetActive(false);
             currentFloor++;
 

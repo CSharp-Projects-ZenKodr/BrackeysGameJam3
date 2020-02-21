@@ -287,7 +287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: f70cdba31875009438bdbeec467faa41, type: 2}
-  - {fileID: 2100000, guid: f8dd6d4d0b3a38648ae2ce15c0249ec7, type: 2}
+  - {fileID: 2100000, guid: 2ea5bf5a23bc3d14e8b4ddbd74a856f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -323,7 +323,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: f70cdba31875009438bdbeec467faa41, type: 2}
-  - {fileID: 2100000, guid: f8dd6d4d0b3a38648ae2ce15c0249ec7, type: 2}
+  - {fileID: 2100000, guid: 2ea5bf5a23bc3d14e8b4ddbd74a856f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -525,3 +525,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prizeValue: 5000
   unearthedPrizeValue: 0
+  collectVolume: 0.2
+  collectPitch: 0.6

@@ -34,13 +34,17 @@ namespace Assets.HolyTreasureScripts.UI {
         public bool tutorialScene = false;
 
         /// <summary>
-        /// The user controller in the scene;
+        /// The user controller in the scene.
         /// </summary>
         private ThirdPersonUserControl useCon;
         /// <summary>
-        /// The GameplayUI in the scene;
+        /// The GameplayUI in the scene.
         /// </summary>
         private GameplayUI gameUI;
+        /// <summary>
+        /// The player inventory in the scene.
+        /// </summary>
+        private PlayerInventory playInv;
         #endregion
 
         private void Awake() {
@@ -54,7 +58,8 @@ namespace Assets.HolyTreasureScripts.UI {
         private void Start() {
             if (!mainMenuScene) {
                 useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
-                gameUI = GameplayUI.Instance; 
+                gameUI = GameplayUI.Instance;
+                playInv = PlayerInventory.Instance;
             }
             attachedAnimator = GetComponent<Animator>();
         }
@@ -63,7 +68,9 @@ namespace Assets.HolyTreasureScripts.UI {
         /// What should happen once the scene is done fading out.
         /// </summary>
         public void FadeOutComplete() {
-            PlayerPrefs.SetInt("ObtainedScore", PlayerInventory.Instance.currentMoney);
+            if (playInv != null) {
+                PlayerPrefs.SetInt("ObtainedScore", playInv.currentMoney); 
+            }
             SceneManager.LoadScene(nextSceneName);
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Assets.HolyTreasureScripts.Audio;
 
 namespace Assets.HolyTreasureScripts.UI {
     public class GameOverUI : MonoBehaviour {
@@ -28,6 +29,10 @@ namespace Assets.HolyTreasureScripts.UI {
         public GameObject mainMenuButton;
 
         /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
+        /// <summary>
         /// A List of the previous high scores acquired.
         /// </summary>
         private List<int> previousScores = new List<int>();
@@ -42,6 +47,7 @@ namespace Assets.HolyTreasureScripts.UI {
         #endregion
 
         private void Start() {
+            audioMan = AudioManager.Instance;
             bool firstTimeHere = false;
             int firstTimeSeeingScreen = PlayerPrefs.GetInt("FirstTime");
 
@@ -68,7 +74,6 @@ namespace Assets.HolyTreasureScripts.UI {
             }
 
             //Get obtained score
-            //TODO: Make sure when player gets game over, their treasure score saves to this.
             int obtainedScore = PlayerPrefs.GetInt("ObtainedScore");
             //Compare it to the scores that already exist
             bool newHighScore = false;
@@ -86,6 +91,7 @@ namespace Assets.HolyTreasureScripts.UI {
             }
             //If higher than any of them, insert it at appropiate spot
             if (newHighScore) {
+                audioMan.PlaySound("HighScore");
                 previousScores.Insert(newHighScoreIndex, obtainedScore);
                 //Get rid of very bottom score
                 previousScores.Remove(previousScores.Last());
@@ -168,6 +174,16 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         public void GoToMainMenu () {
             SceneManager.LoadScene("Main Menu");
+        }
+
+        /// <summary>
+        /// Plays a sound on mouse hover.
+        /// </summary>
+        /// <param name="soundName">
+        /// The name of the sound being played.
+        /// </param>
+        public void PlaySoundOnHover (string soundName) {
+            audioMan.PlaySound(soundName);
         }
 
         /// <summary>

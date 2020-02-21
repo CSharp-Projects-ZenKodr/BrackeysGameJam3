@@ -43,7 +43,9 @@ namespace Assets.HolyTreasureScripts.Tutorial {
         }
 
         private void OnDisable() {
-            correspondingDirection.gameObject.SetActive(false);
+            if (correspondingDirection != null) {
+                correspondingDirection.gameObject.SetActive(false); 
+            }
         }
     }
 }

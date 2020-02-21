@@ -1,4 +1,5 @@
-﻿using Assets.HolyTreasureScripts.GameStructure;
+﻿using Assets.HolyTreasureScripts.Audio;
+using Assets.HolyTreasureScripts.GameStructure;
 using Assets.HolyTreasureScripts.UI;
 using System;
 using System.Collections.Generic;
@@ -112,6 +113,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         private PlayerInventory playIn;
         /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
+        /// <summary>
         /// Return true if player is in shop bubble, or false if not.
         /// </summary>
         private bool playerInShopBubble = false;
@@ -135,6 +140,7 @@ namespace Assets.HolyTreasureScripts.UI {
             gameUI = GameplayUI.Instance;
             gameMan = GameManager.Instance;
             playIn = PlayerInventory.Instance;
+            audioMan = AudioManager.Instance;
             baseLightPrice = price_light;
             baseWallPrice = price_floor;
             UpdatePriceText(text_oxygen, price_oxygen);
@@ -218,6 +224,7 @@ namespace Assets.HolyTreasureScripts.UI {
         public void ShineLight () {
             if (!gameMan.bigLight.enabled) {
                 if (SpendMoney(price_light)) {
+                    audioMan.PlaySound("BigLight");
                     gameMan.bigLight.enabled = true;
                     lightItemGroup.ChangeDisplay("Light is Shining", "-");
                     price_light = 0;
@@ -232,6 +239,7 @@ namespace Assets.HolyTreasureScripts.UI {
         public void ReinforceFloor() {
             if (!gameMan.reinforced) {
                 if (SpendMoney(price_floor)) {
+                    audioMan.PlaySound("Reinforce");
                     gameMan.reinforced = true;
                     gameMan.UpdateMineStatus(gameMan.minesExploded);
                     floorItemGroup.ChangeDisplay("Floor Reinforced", "-");
@@ -272,6 +280,7 @@ namespace Assets.HolyTreasureScripts.UI {
 
             if (playIn.currentMoney >= moneyBeingSpent) {
                 playIn.UpdateMoney(-moneyBeingSpent);
+                audioMan.PlaySound("Money");
                 output = true;
             } else {
                 descriptionBox.text = "You don't have enough money for this.";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.HolyTreasureScripts.Audio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,10 @@ namespace Assets.HolyTreasureScripts.Digging {
         /// The controller attached to the player.
         /// </summary>
         private ThirdPersonUserControl useCon;
+        /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
         /// <summary>
         /// The initial scale of the pile.
         /// </summary>
@@ -71,7 +76,7 @@ namespace Assets.HolyTreasureScripts.Digging {
         private void GetInitialData() {
             attachedRender = GetComponent<Renderer>();
             pileMaterial = attachedRender.material;
-            
+            audioMan = AudioManager.Instance;
             initialPileScale = transform.localScale;
             fullyDugPileScale = new Vector3(initialPileScale.x, initialPileScale.y, 0);
             hole.localScale = Vector3.zero;
@@ -88,6 +93,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                 if (dugValue < 1) {
                     if (Input.GetKeyDown(KeyCode.Space)) {
                         diggingPS.Play();
+                        audioMan.PlaySound("Dig");
                     }
                     if (Input.GetKey(KeyCode.Space)) {
                         useCon.ableToMove = false;
@@ -100,6 +106,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                         useCon.ableToMove = true;
                         useCon.crouch = false;
                         diggingPS.Stop();
+                        audioMan.StopSound("Dig");
                     } 
                 } else {
                     prizeClass.dugUp = true;
@@ -107,6 +114,7 @@ namespace Assets.HolyTreasureScripts.Digging {
                     useCon.ableToMove = true;
                     useCon.crouch = false;
                     useCon.interactionCanvas.SetActive(false);
+                    audioMan.StopSound("Dig");
                     Destroy(diggingPS);
                     Destroy(gameObject);
                 }
