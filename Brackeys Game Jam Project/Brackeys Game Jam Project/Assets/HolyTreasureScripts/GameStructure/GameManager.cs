@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -42,6 +42,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// The Big Light that can illuminate the entire cave.
         /// </summary>
         public Light bigLight;
+        /// <summary>
+        /// The Text Component that has the Ready...Go text on it.
+        /// </summary>
+        public Text readyGo;
 
         /// <summary>
         /// The Gameplay UI class in the scene.
@@ -60,6 +64,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// </summary>
         private AudioManager audioMan;
         /// <summary>
+        /// The audio source that holds the lava sound.
+        /// </summary>
+        private AudioSource lavaSource;
+        /// <summary>
         /// The Shop class in the scene.
         /// </summary>
         private Shop shop;
@@ -75,6 +83,10 @@ namespace Assets.HolyTreasureScripts.GameStructure {
         /// Return true if class should check for a game over, or false if not.
         /// </summary>
         private bool checkForGameOver = true;
+        /// <summary>
+        /// Return true if the music has already been played, or false if not.
+        /// </summary>
+        private bool musicAlreadyPlayed = false;
         /// <summary>
         /// The current floor the player is on.
         /// </summary>
@@ -105,6 +117,8 @@ namespace Assets.HolyTreasureScripts.GameStructure {
             sceneTran = SceneTransitioner.Instance;
             shop = Shop.Instance;
             audioMan = AudioManager.Instance;
+            audioMan.PlaySound("Floor1");
+            lavaSource = audioMan.PlaySound("Lava");
         }
 
         /// <summary>
@@ -159,8 +173,31 @@ namespace Assets.HolyTreasureScripts.GameStructure {
                 bigLight.enabled = false; 
             }
             audioMan.PlaySound("Break");
+            if (!musicAlreadyPlayed) {
+                audioMan.StopSound("Floor1");
+                audioMan.PlaySound("Floor2");
+                musicAlreadyPlayed = true;
+            }
             groundFloors[currentFloor].SetActive(false);
             currentFloor++;
+
+            switch (currentFloor) {
+                case 0:
+                    lavaSource.volume = 0.02f;
+                    break;
+                case 1:
+                    lavaSource.volume = 0.04f;
+                    break;
+                case 2:
+                    lavaSource.volume = 0.08f;
+                    break;
+                case 3:
+                    lavaSource.volume = 0.12f;
+                    break;
+                default:
+                    lavaSource.volume = 0.02f;
+                    break;
+            }
 
             gameUI.UpdateFloorText(currentFloor + 1);
             gameUI.oxygenDecayRate *= 2;
@@ -193,11 +230,18 @@ namespace Assets.HolyTreasureScripts.GameStructure {
             if (checkForGameOver) {
                 if (gameUI.oxygenValue <= 0) {
                     useCon.ableToMove = false;
-                    sceneTran.attachedAnimator.SetTrigger("FadeOut");
+                    readyGo.text = "GAME OVER";
+                    StartCoroutine(FadeOuttaHere());
                     Debug.Log("Game Over");
                     checkForGameOver = false;
                 }
             }
+        }
+
+        IEnumerator FadeOuttaHere() {
+            yield return new WaitForSeconds(3);
+            sceneTran.attachedAnimator.SetTrigger("FadeOut");
+            StopCoroutine(FadeOuttaHere());
         }
     }
 }

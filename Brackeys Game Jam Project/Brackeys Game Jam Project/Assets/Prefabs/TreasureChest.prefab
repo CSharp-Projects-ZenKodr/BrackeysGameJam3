@@ -525,5 +525,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prizeValue: 5000
   unearthedPrizeValue: 0
-  collectVolume: 0.2
-  collectPitch: 0.6
+  collectVolume: 0.5
+  collectPitch: 1.2

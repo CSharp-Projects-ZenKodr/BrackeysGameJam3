@@ -2,13 +2,14 @@
 using Assets.HolyTreasureScripts.GameStructure;
 using Assets.HolyTreasureScripts.UI;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.ThirdPerson;
-//TODO: Add Tips
+
 namespace Assets.HolyTreasureScripts.UI {
     public class Shop : MonoBehaviour {
 
@@ -117,6 +118,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// </summary>
         private AudioManager audioMan;
         /// <summary>
+        /// A list of tips to give the player.
+        /// </summary>
+        private List<string> tips;
+        /// <summary>
         /// Return true if player is in shop bubble, or false if not.
         /// </summary>
         private bool playerInShopBubble = false;
@@ -135,6 +140,7 @@ namespace Assets.HolyTreasureScripts.UI {
         }
 
         private void Start() {
+            tips = File.ReadAllLines(Application.dataPath + "/Resources/Tips.txt").ToList();
             useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
             character = useCon.GetComponent<ThirdPersonCharacter>();
             gameUI = GameplayUI.Instance;
@@ -270,6 +276,15 @@ namespace Assets.HolyTreasureScripts.UI {
         }
 
         /// <summary>
+        /// Gives a help tip to the player.
+        /// </summary>
+        public void GiveTip() {
+            string displayTip = tips[UnityEngine.Random.Range(0, tips.Count)];
+
+            descriptionBox.text = displayTip;
+        }
+
+        /// <summary>
         /// Spends the player's money.
         /// </summary>
         /// <param name="moneyBeingSpent">
@@ -278,13 +293,16 @@ namespace Assets.HolyTreasureScripts.UI {
         private bool SpendMoney(int moneyBeingSpent) {
             bool output = false;
 
-            if (playIn.currentMoney >= moneyBeingSpent) {
-                playIn.UpdateMoney(-moneyBeingSpent);
-                audioMan.PlaySound("Money");
-                output = true;
-            } else {
-                descriptionBox.text = "You don't have enough money for this.";
-                // Debug.LogError("The player does not have enough money to buy this item.");
+            if (shopCanvas.activeInHierarchy) {
+                if (playIn.currentMoney >= moneyBeingSpent) {
+                    playIn.UpdateMoney(-moneyBeingSpent);
+                    audioMan.PlaySound("Money");
+                    output = true;
+                }
+                else {
+                    descriptionBox.text = "You don't have enough money for this.";
+                    // Debug.LogError("The player does not have enough money to buy this item.");
+                } 
             }
 
             return output;

@@ -19,10 +19,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
         /// </summary>
         public AudioSource foot1;
         /// <summary>
-        /// The Audio for Foot 2.
-        /// </summary>
-        public AudioSource foot2;
-        /// <summary>
         /// Return true if controller is able to move, or false if not.
         /// </summary>
         public bool ableToMove = false;
@@ -97,12 +93,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
                 if (v != 0) {
                     if (!audioStartingPlaying) {
                         foot1.Play();
-                        foot2.Play();
                         audioStartingPlaying = true;
                     }
                 } else {
                     foot1.Stop();
-                    foot2.Stop();
                     audioStartingPlaying = false;
                 }
 
@@ -127,7 +121,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
             } else {
                 m_Character.Move(Vector3.zero, crouch, false);
                 foot1.Stop();
-                foot2.Stop();
                 audioStartingPlaying = false;
             }
         }

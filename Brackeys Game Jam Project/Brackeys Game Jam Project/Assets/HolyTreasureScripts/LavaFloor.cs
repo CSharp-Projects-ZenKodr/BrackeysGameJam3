@@ -1,9 +1,10 @@
 ﻿using Assets.HolyTreasureScripts.UI;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.HolyTreasureScripts {
     public class LavaFloor : MonoBehaviour {
@@ -13,6 +14,10 @@ namespace Assets.HolyTreasureScripts {
         /// The rate at which the lave animates.
         /// </summary>
         public float animationRate;
+        /// <summary>
+        /// The component that has the Ready...Go text on it.
+        /// </summary>
+        public Text readyGo;
 
         /// <summary>
         /// The Renderer attached to the Lava Floor.
@@ -47,8 +52,15 @@ namespace Assets.HolyTreasureScripts {
 
                 Debug.Log("Killed by Lava");
 
-                SceneTransitioner.Instance.attachedAnimator.SetTrigger("FadeOut");
+                readyGo.text = "GAME OVER";
+                StartCoroutine(FadeOuttaHere());
             }
+        }
+
+        IEnumerator FadeOuttaHere() {
+            yield return new WaitForSeconds(3);
+            SceneTransitioner.Instance.attachedAnimator.SetTrigger("FadeOut");
+            StopCoroutine(FadeOuttaHere());
         }
     }
 }

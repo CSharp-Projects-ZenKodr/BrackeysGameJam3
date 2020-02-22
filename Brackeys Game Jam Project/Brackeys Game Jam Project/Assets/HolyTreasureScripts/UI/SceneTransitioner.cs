@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Assets.HolyTreasureScripts.Audio;
+using System;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 namespace Assets.HolyTreasureScripts.UI {
@@ -25,6 +27,10 @@ namespace Assets.HolyTreasureScripts.UI {
         public bool mainMenuScene { get; set; }
 
         /// <summary>
+        /// The Text component that has the Ready...Go text on it.
+        /// </summary>
+        public Text readyGo;
+        /// <summary>
         /// The name of the scene we will be transitioning to.
         /// </summary>
         public string nextSceneName;
@@ -45,6 +51,10 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The player inventory in the scene.
         /// </summary>
         private PlayerInventory playInv;
+        /// <summary>
+        /// The Audio Manager in the scene.
+        /// </summary>
+        private AudioManager audioMan;
         #endregion
 
         private void Awake() {
@@ -60,6 +70,10 @@ namespace Assets.HolyTreasureScripts.UI {
                 useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
                 gameUI = GameplayUI.Instance;
                 playInv = PlayerInventory.Instance;
+            }
+            if (tutorialScene) {
+                audioMan = AudioManager.Instance;
+                audioMan.PlaySound("TutorialTheme");
             }
             attachedAnimator = GetComponent<Animator>();
         }
@@ -78,10 +92,21 @@ namespace Assets.HolyTreasureScripts.UI {
         /// What should happen once the scene is done fading in.
         /// </summary>
         public void FadeInComplete() {
-            useCon.ableToMove = true;
             if (!tutorialScene) {
-                gameUI.drainOxygen = true; 
+                StartCoroutine(CountdownToPlay());
+            } else {
+                useCon.ableToMove = true;
             }
+        }
+
+        IEnumerator CountdownToPlay() {
+            yield return new WaitForSeconds(3);
+            readyGo.text = "GO!";
+            gameUI.drainOxygen = true;
+            useCon.ableToMove = true;
+            yield return new WaitForSeconds(3);
+            readyGo.text = "";
+            StopCoroutine(CountdownToPlay());
         }
     }
 }

@@ -1486,14 +1486,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - clip: {fileID: 8300000, guid: d4c2692668174cf4e95e409fb48dbe4f, type: 3}
+  - clip: {fileID: 8300000, guid: 290d1e2269f09e14a85ca3d87fe0e6db, type: 3}
     soundName: ButtonBoop
-    volume: 0.81
-    pitch: 0.99
+    volume: 0.333
+    pitch: 1.22
     loopSound: 0
   - clip: {fileID: 8300000, guid: e20faef5dbecb1249a74ca0700a1becd, type: 3}
     soundName: HighScore
-    volume: 0.7
+    volume: 0.333
     pitch: 1
     loopSound: 0
 --- !u!4 &1313291192
