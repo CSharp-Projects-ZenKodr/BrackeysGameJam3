@@ -50,7 +50,7 @@ namespace Assets.HolyTreasureScripts.Audio {
         public AudioSource PlaySound(string soundName) {
             Sound s = Array.Find(sounds, sound => sound.soundName == soundName);
             if (s == null) {
-                Debug.LogWarning("Sound name given did not return one of the sounds.");
+                Debug.LogWarning(soundName + " did not return one of the sounds.");
                 return null;
             }
             s.source.Play();

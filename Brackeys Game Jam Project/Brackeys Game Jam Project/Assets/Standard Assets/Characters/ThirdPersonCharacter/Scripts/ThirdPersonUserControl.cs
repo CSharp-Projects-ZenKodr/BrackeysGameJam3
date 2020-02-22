@@ -70,7 +70,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
             m_Character = GetComponent<ThirdPersonCharacter>();
 
             commandText = interactionCanvas.transform.GetChild(0).GetComponent<Text>();
-
+            
             digRate = baseDigRate;
             SwitchTools(4);
             currentToolID = 4;

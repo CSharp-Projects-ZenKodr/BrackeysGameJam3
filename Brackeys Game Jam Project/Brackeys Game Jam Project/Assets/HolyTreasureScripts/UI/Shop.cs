@@ -12,7 +12,7 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 namespace Assets.HolyTreasureScripts.UI {
     public class Shop : MonoBehaviour {
-
+        
         #region Variables
         /// <summary>
         /// The static instance of this class.
@@ -92,11 +92,11 @@ namespace Assets.HolyTreasureScripts.UI {
         /// The Canvas that holds the shop UI data.
         /// </summary>
         public GameObject shopCanvas;
-
         /// <summary>
         /// The user controller in the scene.
         /// </summary>
-        private ThirdPersonUserControl useCon;
+        public ThirdPersonUserControl useCon;
+
         /// <summary>
         /// The third person character the player controls.
         /// </summary>
@@ -141,7 +141,7 @@ namespace Assets.HolyTreasureScripts.UI {
 
         private void Start() {
             tips = File.ReadAllLines(Application.dataPath + "/Resources/Tips.txt").ToList();
-            useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
+            //useCon = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonUserControl>();
             character = useCon.GetComponent<ThirdPersonCharacter>();
             gameUI = GameplayUI.Instance;
             gameMan = GameManager.Instance;
@@ -170,7 +170,7 @@ namespace Assets.HolyTreasureScripts.UI {
                             useCon.interactionCanvas.SetActive(!useCon.interactionCanvas.activeInHierarchy);
                             useCon.commandText.text = "SHOP";
                         }
-                    } 
+                    }
                 }
             }
         }
@@ -341,6 +341,7 @@ namespace Assets.HolyTreasureScripts.UI {
                 useCon.interactionCanvas.SetActive(true);
                 useCon.commandText.text = "SHOP";
                 playerInShopBubble = true;
+
             }
         }
 
